@@ -1,10 +1,17 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 
-import "../cv/imageProcessing" as imageProcessing
+# from cv.imageProcessing import processAllImages
+
+BOXES = []
 
 app = Flask(__name__)
-CORS(app)
+CORS(
+    app,
+    resources={
+        r"/*/": {"origins": ["https://localhost:3000", "http://localhost:3000"]}
+    },
+)
 
 # Members API Route
 
@@ -14,7 +21,6 @@ name = ""
 @app.route("/useradd", methods=["POST"])
 def useradd():
     imageList = request.json["images"]
-    
 
     return name
 
@@ -22,6 +28,14 @@ def useradd():
 @app.route("/listusers", methods=["GET"])
 def listusers():
     return name
+
+
+@app.route("/processImages", methods=["POST"])
+def processImages():
+    request_data = request.json
+
+    imageDimensions = processAllImages(request_data)
+    return []
 
 
 if __name__ == "__main__":
