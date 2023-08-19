@@ -1,3 +1,8 @@
+import numpy as np
+
+def CostFunction(volume, SA):
+    return np.cbrt(volume)*np.sqrt(SA)
+
 class Object3D:
     def __init__(self, width: int, length: int, height: int):
         self.width = width
