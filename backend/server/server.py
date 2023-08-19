@@ -11,7 +11,8 @@ name = ""
 
 @app.route("/useradd", methods=["POST"])
 def useradd():
-    name = request.json[""]
+    imageList = request.json["images"]
+    
     
     return name
 
@@ -38,12 +39,25 @@ POST:
     "images": [{
         "front": '',    // base64 string
         "side": ''      // base64 string
+        "unique_id": 
         }]
     
 }
 
 GET:
 {
-
+    "boxes": [{
+        transparent: true,
+        position: [0, 0, 0],
+        size: [5, 5, 5],
+        color: "grey",
+    },
+    {
+        transparent: false,
+        position: [0, 0, 0],
+        size: [1, 1, 1],
+        color: "red",
+    }]
 }
+
 """

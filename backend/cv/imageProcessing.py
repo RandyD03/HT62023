@@ -130,15 +130,16 @@ def getObjectMeasurement(image):
 # Unpacks API load and processes all image sets, returns dimensions of all objects
 # to be sent to the algorithm -- imagePairs is a list of base64 pairs
 def processAllImages(imagePairs):
+    # objectDimensions: [{w,l,h}, unique id #]
     objectDimensions = []
     for pair in imagePairs:
-        #images: [front image, side image]
+        #images: [front image, side image, unique id #]
         images = decodeImages(pair)
 
         frontDimensions = getObjectMeasurement(images[0])
         sideDimensions = getObjectMeasurement(images[1])
 
-        objectDimensions.append(convertThreeDimension(frontDimensions, sideDimensions))
+        objectDimensions.append([convertThreeDimension(frontDimensions, sideDimensions), images[2]])
     
     return objectDimensions
 
