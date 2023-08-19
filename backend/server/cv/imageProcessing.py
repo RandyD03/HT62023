@@ -53,7 +53,7 @@ def getObjectMeasurement(image):
 
     # perform edge detection, then perform a dilation + erosion to
     # close gaps in between object edges
-    edged = cv2.Canny(gray, 50, 100)
+    edged = cv2.Canny(gray, 100, 100)
     edged = cv2.dilate(edged, None, iterations=1)
     edged = cv2.erode(edged, None, iterations=1)
 
@@ -177,7 +177,7 @@ def processAllImages(imagePairs):
 
 
 base1 = None
-with open("front.jpeg", "rb") as f:
+with open("test3.jpg", "rb") as f:
     base1 = base64.b64encode(f.read())
 
 dimensions = processAllImages([[base1, base1]])
