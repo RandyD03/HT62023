@@ -6,18 +6,20 @@ CORS(app)
 
 # Members API Route
 
-name = ''
+name = ""
 
-@app.route('/useradd', methods=['POST'])
+
+@app.route("/useradd", methods=["POST"])
 def useradd():
     name = request.json[""]
-
     
     return name
 
-@app.route('/listusers', methods = ['GET'])
+
+@app.route("/listusers", methods=["GET"])
 def listusers():
     return name
+
 
 if __name__ == "__main__":
     app.run(debug=True)
