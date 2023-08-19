@@ -1,25 +1,10 @@
-import {
-    Box,
-    Flex,
-    Stack,
-    Button,
-    Grid,
-    Input,
-    GridItem,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
-    VStack,
-    Center,
-    Heading,
-} from "@chakra-ui/react"
-
+import { Button, Grid, GridItem } from "@chakra-ui/react"
 import React, { useState } from "react"
-import BoxCard from "./boxCard"
+
 import BinCanvas from "./BinCanvas"
+import BoxCard from "./boxCard"
 import ResultCard from "./resultCard"
+
 const boxes3d = [
     {
         transparent: true,

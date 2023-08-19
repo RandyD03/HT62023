@@ -1,18 +1,19 @@
 import {
+    Button,
     Card,
-    Stack,
-    Heading,
-    Text,
     CardBody,
     CardFooter,
-    Button,
-    Image,
     Center,
-    UnorderedList,
+    Heading,
+    Image,
     ListItem,
-} from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
-import boxLogo from "../images/box.png";
+    Stack,
+    Text,
+    UnorderedList,
+} from "@chakra-ui/react"
+
+import { DeleteIcon } from "@chakra-ui/icons"
+import boxLogo from "../images/box.png"
 
 function BoxCard({ props }) {
     return (
@@ -49,7 +50,7 @@ function BoxCard({ props }) {
                 </Button>
             </CardFooter>
         </Card>
-    );
+    )
 }
 
-export default BoxCard;
+export default BoxCard

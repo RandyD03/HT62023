@@ -1,12 +1,19 @@
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from '@react-three/drei'
-import { EffectComposer, Selection, SSAO, SMAA, Outline } from "@react-three/postprocessing"
-import Scene from "./Scene.jsx";
 import "../styles/Canvas.css"
 
-const BinCanvas = (props) => {
+import {
+    EffectComposer,
+    Outline,
+    SMAA,
+    SSAO,
+    Selection,
+} from "@react-three/postprocessing"
 
-    const { boxes } = props;
+import { Canvas } from "@react-three/fiber"
+import { OrbitControls } from "@react-three/drei"
+import Scene from "./Scene.jsx"
+
+const BinCanvas = (props) => {
+    const { boxes } = props
 
     // items => [
     //     {
@@ -21,8 +28,19 @@ const BinCanvas = (props) => {
             <ambientLight />
             <Selection>
                 <EffectComposer autoClear={false}>
-                    <SSAO radius={0.05} intensity={150} luminanceInfluence={0.5} color="black" />
-                    <Outline visibleEdgeColor="black" hiddenEdgeColor="black" blur width={1000} edgeStrength={100} />
+                    <SSAO
+                        radius={0.05}
+                        intensity={150}
+                        luminanceInfluence={0.5}
+                        color="black"
+                    />
+                    <Outline
+                        visibleEdgeColor="black"
+                        hiddenEdgeColor="black"
+                        blur
+                        width={1000}
+                        edgeStrength={100}
+                    />
                     <SMAA />
                 </EffectComposer>
                 {boxes.map((sceneData) => (
@@ -31,7 +49,7 @@ const BinCanvas = (props) => {
             </Selection>
             <OrbitControls />
         </Canvas>
-    );
+    )
 }
 
-export default BinCanvas;
+export default BinCanvas
