@@ -1,3 +1,5 @@
 /** Helper functions for UI */
 
-function ()
+function camCapture() {
+    
+}

@@ -1,8 +1,25 @@
 # Functions for processing an image and determining the bounding box
 
-import cv2
+from scipy.spatial import distance as dist
+from imutils import perspective
+from imutils import contours
 import numpy as np
 from imutils import perspective
+import argparse
+import imutils
+import cv2
+
+def midpoint(ptA, ptB):
+	return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
+
+# width of the top-most object used for reference measurements in centimetres
+REFERENCE_WIDTH = 10
+
+
+
+
+
+
 
 CONVOLUTION_KERNEL = (5, 5)
 REF_OBJECT_WIDTH = 5
