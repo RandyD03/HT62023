@@ -25,20 +25,20 @@ function App() {
   //Data from backend
   const [data, setData] = useState([]);
   const [boxes, setBoxes] = useState([]);
+  const [images, setImages] = useState([]);
 
-  const handleBoxSubmit = (event, width, length, height, name, id) => {
+  const [newImages, setNewImages] = useState([]);
+  const handleBoxSubmit = async (event, width, length, height, name, id) => {
     event.preventDefault();
-    setBoxes((prevBoxes) => [
-      ...prevBoxes,
-      {
-        width: width,
-        length: length,
-        height: height,
-        name: name,
-        id: id,
-      },
-    ]);
-    console.log(boxes);
+
+    const newBox = {
+      width: width,
+      length: length,
+      height: height,
+      name: name,
+      id: id,
+    }
+    setBoxes([...boxes, newBox]);
   };
 
   const handleBoxDelete = (id) => {
@@ -54,6 +54,10 @@ function App() {
       // console.log(response.data);
       setData(response.data);
     });
+  }
+
+  async function handleImageUpload() {
+    const annotatedImages = await axios.post("http://127.0.0.1:5000/processImages", newImages);
   }
 
   function getDatas() {
