@@ -9,8 +9,8 @@ function ItemTab() {
     const photoRef1 = useRef(null)
     const videoRef2 = useRef(null)
     const photoRef2 = useRef(null)
-    const [hasPhoto1, setHasPhoto1] = useState(false)
-    const [hasPhoto2, setHasPhoto2] = useState(false)
+    const [photo1, setPhoto1] = useState("null")
+    const [photo2, setPhoto2] = useState("null")
 
     useEffect(() => {
         if (!navigator.mediaDevices?.enumerateDevices) {
@@ -74,14 +74,19 @@ function ItemTab() {
         let ctx2 = photo2.getContext("2d")
         ctx1.drawImage(video1, 0, 0, width, height)
         ctx2.drawImage(video2, 0, 0, width, height)
-        setHasPhoto1(true)
-        setHasPhoto2(true)
+        let photo1url = ctx1.canvas.toDataURL().split(",")[1]
+        let photo2url = ctx2.canvas.toDataURL().split(",")[1]
+        console.log(photo1url)
+        setPhoto1(photo1url)
+        setPhoto2(photo2url)
     }
 
     async function handleImageUpload() {
+        console.log(photo1)
+        console.log(photo2)
         const annotatedImages = await axios.post(
             "http://127.0.0.1:5000/processImages",
-            newImages
+            [[photo1, photo2]]
         )
     }
     // {videoIds.map((videoId, index) => (
@@ -104,6 +109,7 @@ function ItemTab() {
                 <Button width="100%" onClick={takePhoto}>
                     Capture
                 </Button>
+                <Button onClick={handleImageUpload}>Submit</Button>
             </GridItem>
         </Grid>
     )
