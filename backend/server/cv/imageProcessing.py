@@ -14,6 +14,14 @@ import base64
 REFERENCE_WIDTH = 10
 
 
+class Response:
+    def __init__(self, dimensions, uniqueID, frontResult, sideResult):
+        self.dimensions = dimensions
+        self.uniqueID = uniqueID
+        self.frontResult = frontResult
+        self.sideResult = sideResult
+
+
 def midPoint(ptA, ptB):
     return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
@@ -145,10 +153,10 @@ def getObjectMeasurement(image):
 
 
 # Unpacks API load and processes all image sets, returns dimensions of all objects
-# to be sent to the algorithm -- imagePairs is a list of base64 pairs
+# to be sent to the algorithm -- imagePairs is a list of base64 pairs and unique id #
 def processAllImages(imagePairs):
     # objectDimensions: [{w,l,h}, unique id #, [opencv front, opencv side]]
-    objectDimensions = []
+    Result = []
     for pair in imagePairs:
         # images: [front image, side image]
         images = decodeImages([pair[0], pair[1]])
@@ -157,15 +165,15 @@ def processAllImages(imagePairs):
         frontDimensions = getObjectMeasurement(images[0])
         sideDimensions = getObjectMeasurement(images[1])
 
-        objectDimensions.append(
-            [
-                convertThreeDimension(frontDimensions[0], sideDimensions[0]),
-                pair[2],
-                [frontDimensions[1], sideDimensions[1]],
-            ]
+        curResult = Response(
+            convertThreeDimension(frontDimensions[0], sideDimensions[0]),
+            pair[2],
+            frontDimensions[1],
+            sideDimensions[1],
         )
+        Result.append(curResult)
 
-    return objectDimensions
+    return Result
 
 
 base1 = None
