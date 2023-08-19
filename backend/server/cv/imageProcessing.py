@@ -9,6 +9,7 @@ import argparse
 import imutils
 import cv2
 import base64
+import json
 
 # width of the top-most object used for reference measurements in centimetres
 REFERENCE_WIDTH = 10
@@ -68,7 +69,7 @@ def getObjectMeasurement(image):
 
     pixelsPerCenti = None
 
-    c = cnts[1]
+    c = cnts[0]
     # compute the rotated bounding box of the contour
     orig = image.copy()
     box = cv2.minAreaRect(c)
@@ -139,10 +140,10 @@ def getObjectMeasurement(image):
     )
 
     # show the output image
-    cv2.imshow("Image", orig)
-    cv2.waitKey(5000)
-
-    return [[dimB, dimA], orig]
+    # cv2.imshow("Image", orig)
+    # cv2.waitKey(5000)
+    payload = [[dimB, dimA], orig]
+    return payload
 
 
 # Unpacks API load and processes all image sets, returns dimensions of all objects
@@ -158,15 +159,17 @@ def processAllImages(imagePairs):
         frontDimensions = getObjectMeasurement(images[0])
         sideDimensions = getObjectMeasurement(images[1])
 
-        curResult = Response(
-            convertThreeDimension(frontDimensions[0], sideDimensions[0]),
-            pair[2],
-            frontDimensions[1],
-            sideDimensions[1],
-        )
-        Result.append(curResult)
+        curResult = [
+            {
+                "dimensions": convertThreeDimension(
+                    frontDimensions[0], sideDimensions[0]
+                )
+            },
+            {"frontImg": base64.b64encode(frontDimensions[1]).decode("utf-8")},
+            {"sideImg": base64.b64encode(sideDimensions[1]).decode("utf-8")},
+        ]
 
-    return Result
+    return json.dumps(curResult)
 
 
 # base1 = None

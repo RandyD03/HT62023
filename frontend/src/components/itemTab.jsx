@@ -76,18 +76,16 @@ function ItemTab() {
         ctx2.drawImage(video2, 0, 0, width, height)
         let photo1url = ctx1.canvas.toDataURL().split(",")[1]
         let photo2url = ctx2.canvas.toDataURL().split(",")[1]
-        console.log(photo1url)
         setPhoto1(photo1url)
         setPhoto2(photo2url)
     }
 
     async function handleImageUpload() {
-        console.log(photo1)
-        console.log(photo2)
         const annotatedImages = await axios.post(
             "http://127.0.0.1:5000/processImages",
             [[photo1, photo2]]
         )
+        console.log(annotatedImages);
     }
     // {videoIds.map((videoId, index) => (
     //     <Box>
