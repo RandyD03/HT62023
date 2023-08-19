@@ -2,12 +2,16 @@
 
 import cv2
 import numpy as np
+from imutils import perspective
 
 CONVOLUTION_KERNEL = (5, 5)
+REF_OBJECT_WIDTH = 5
+REF_OBJECT_HEIGHT = 5
+REF_OBJECT_LENGTH = 5
 
 # Take an image and identify the contours of the image
 def get_contours(
-    img, cThr=[20, 20], filter=0
+    img, cThr=[100, 100], filter=0
 ):  # lower thresholds will result in consideration of weaker outlines
 
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # to grayscale
@@ -35,20 +39,38 @@ def get_contours(
 
     for c in contours:
         area = cv2.contourArea(c)
-        if area > 1000:
-            peri = cv2.arcLength(c, True)  # get perimeter
-            approx = cv2.approxPolyDP(
-                c, 0.02 * peri, True
-            )  # simplifies the contour by reducing no. of vertices
-            bbox = cv2.boundingRect(approx)  # create bounding box
-            if filter > 0:
-                if len(approx) == filter:
-                    itemContours.append(len(approx), area, approx)
+        if area < 1000:  # 1000 is minimum area
+            continue
 
-    # while True:
-    #     cv2.imshow("canny", imgThre)
-    #     cv2.waitKey(1)
+        peri = cv2.arcLength(c, True)  # get perimeter
+        approx = cv2.approxPolyDP(
+            c, 0.02 * peri, True
+        )  # simplifies the contour by reducing no. of vertices
+        bbox = perspective.order_points(
+            cv2.boxPoints(cv2.minAreaRect(approx))
+        )  # create bounding box
 
+        if filter > 0:
+            if len(approx) == filter:
+                itemContours.append([len(approx), area, approx, bbox, c])
+        else:
+            itemContours.append([len(approx), area, approx, bbox, c])
+
+    itemContours = sorted(
+        itemContours, key=lambda x: x[1], reverse=True
+    )  # sort by area in descending order
+
+    # Draw contours on the original image
+    for contour in itemContours:
+        cv2.drawContours(img, contour[4], -1, (0, 0, 255), 3)
+
+    return img, itemContours
 
 img = cv2.imread("test.jpg")
-get_contours(img)
+img, itemContours = get_contours(img)
+cv2.imshow("item", img)
+cv2.waitKey(5000)
+if len(itemContours) > 0:
+    biggest = itemContours[0][
+        2
+    ]  # Get the simplified contour of the largest item contour

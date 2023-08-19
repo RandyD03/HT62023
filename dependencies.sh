@@ -1,1 +1,1 @@
-pip install opencv-python numpy gtts playsound cvlib
+pip install opencv-python numpy gtts playsound imutils
