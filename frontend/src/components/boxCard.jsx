@@ -11,6 +11,7 @@ import {
     UnorderedList,
     ListItem,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import boxLogo from "../images/box.png";
 
 function BoxCard({ props }) {
@@ -21,7 +22,8 @@ function BoxCard({ props }) {
                     src={boxLogo}
                     alt="Green double couch with wooden legs"
                     borderRadius="dark-lg"
-                    width="100px"
+                    minWidth="100px"
+                    maxWidth="100px"
                 />
             </Center>
             <CardBody>
@@ -41,6 +43,7 @@ function BoxCard({ props }) {
                     variant="solid"
                     colorScheme="red"
                     onClick={() => props.handleBoxDelete(props.box.id)}
+                    leftIcon={<DeleteIcon />}
                 >
                     Delete
                 </Button>

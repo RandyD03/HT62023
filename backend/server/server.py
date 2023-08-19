@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
-from cv.imageProcessing import processAllImages
+
+# from cv.imageProcessing import processAllImages
 
 BOXES = []
 
@@ -19,7 +20,7 @@ name = ""
 
 @app.route("/useradd", methods=["POST"])
 def useradd():
-    name = request.json[""]
+    imageList = request.json["images"]
 
     return name
 
@@ -34,7 +35,7 @@ def processImages():
     request_data = request.json
 
     imageDimensions = processAllImages(request_data)
-    return response
+    return []
 
 
 if __name__ == "__main__":
@@ -54,12 +55,25 @@ POST:
     "images": [{
         "front": '',    // base64 string
         "side": ''      // base64 string
+        "unique_id": 
         }]
     
 }
 
 GET:
 {
-
+    "boxes": [{
+        transparent: true,
+        position: [0, 0, 0],
+        size: [5, 5, 5],
+        color: "grey",
+    },
+    {
+        transparent: false,
+        position: [0, 0, 0],
+        size: [1, 1, 1],
+        color: "red",
+    }]
 }
+
 """

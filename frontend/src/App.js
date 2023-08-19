@@ -1,59 +1,60 @@
-import React, { useState, useEffect } from "react";
-import BinCanvas from "./components/BinCanvas";
-import axios from "axios";
-import { Box, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react"
 
-import BoxTab from "./components/boxTab.js";
-const boxes3d = [
-  {
-    transparent: true,
-    position: [0, 0, 0],
-    size: [5, 5, 5],
-    color: "grey",
-    id: 1,
-  },
-  {
-    transparent: false,
-    position: [0, 0, 0],
-    size: [1, 1, 1],
-    color: "red",
-    id: 2
-  },
-];
+import axios from "axios"
+import { Box, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react"
+
+import CameraCapture from "./components/CameraCapture"
+import BoxTab from "./components/boxTab"
+import ResultTab from "./components/resultsTab"
 
 function App() {
   //Data from backend
-  const [data, setData] = useState([]);
-  const [boxes, setBoxes] = useState([]);
-  const [images, setImages] = useState([]);
-
-  const [newImages, setNewImages] = useState([]);
-  const handleBoxSubmit = async (event, width, length, height, name, id) => {
-    event.preventDefault();
-
-    const newBox = {
-      width: width,
-      length: length,
-      height: height,
-      name: name,
-      id: id,
-    }
-    setBoxes([...boxes, newBox]);
-  };
-
-  const handleBoxDelete = (id) => {
-    setBoxes((prevBoxes) => prevBoxes.filter((v) => v.id !== id));
-  };
+  const [data, setData] = useState([])
+  const [boxes, setBoxes] = useState([])
+  const [videoIds, setVideoIds] = useState([])
+  const [newImages, setNewImages] = useState([])
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (!navigator.mediaDevices?.enumerateDevices) {
+      console.log("enumerateDevices() not supported.")
+    } else {
+      navigator.mediaDevices
+        .enumerateDevices()
+        .then((devices) => {
+          console.log(devices)
+          const filteredVideoIds = devices
+            .filter(
+              (device) =>
+                device.kind === "videoinput" &&
+                device.label !== "OBS Virtual Camera"
+            )
+            .map((device) => device.deviceId)
 
-  function getData() {
-    axios.get("http://127.0.0.1:5000/listusers").then(function (response) {
-      // console.log(response.data);
-      setData(response.data);
-    });
+          setVideoIds(filteredVideoIds)
+        })
+        .catch((err) => {
+          console.error(`${err.name}: ${err.message}`)
+        })
+    }
+  }, [])
+
+  const handleBoxSubmit = (event, width, length, height, name, id) => {
+    event.preventDefault()
+    setBoxes((prevBoxes) => [
+      ...prevBoxes,
+      {
+        width: width,
+        length: length,
+        height: height,
+        name: name === "" ? `Box ${id + 1}` : name,
+        id: id,
+      },
+    ])
+    console.log(boxes)
+  }
+
+  const handleBoxDelete = (id) => {
+    setBoxes((prevBoxes) => prevBoxes.filter((v) => v.id !== id))
   }
 
   async function handleImageUpload() {
@@ -66,27 +67,44 @@ function App() {
       setData(response.data);
     });
   }
+  useEffect(() => {
+    getData()
+  }, [])
 
-  const [inputs, setInputs] = useState();
+  function getData() {
+    axios.get("http://127.0.0.1:5000/listusers").then(function (response) {
+      // console.log(response.data);
+      setData(response.data)
+    })
+  }
+
+  function getDatas() {
+    axios.get("http://127.0.0.1:5000/listusers").then(function (response) {
+      console.log(response.data)
+      setData(response.data)
+    })
+  }
+
+  const [inputs, setInputs] = useState()
 
   const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
-  };
+    const name = event.target.name
+    const value = event.target.value
+    setInputs((prevInputs) => ({ ...prevInputs, [name]: value }))
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    console.log(inputs);
+    console.log(inputs)
 
     await axios
       .post("http://127.0.0.1:5000/useradd", inputs)
       .then(function (response) {
-        console.log(response.data);
-        setData(response.data);
-      });
-  };
+        console.log(response.data)
+        setData(response.data)
+      })
+  }
 
   return (
     <Box maxHeight="100vh" height="100vh">
@@ -111,21 +129,33 @@ function App() {
               }}
             />
           </TabPanel>
-          <TabPanel>
-            <p>three!</p>
+          <TabPanel height="100%">
+            <ResultTab
+              props={{
+                boxes: boxes,
+                handleBoxDelete: handleBoxDelete,
+              }}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
       <Box>
-        <BinCanvas boxes={boxes3d} />
         {/* <form onSubmit={handleSubmit}>
                     <div>Submit photo here</div>
                     <input onChange={handleChange} />
                     <button type="submit">Add</button>
                 </form> */}
       </Box>
+      <Box>
+        {videoIds.map((videoId, index) => (
+          <Box>
+            {/* <div key={index}>{videoId}</div> */}
+            <CameraCapture deviceId={videoId} />
+          </Box>
+        ))}
+      </Box>
     </Box>
-  );
+  )
 }
 
-export default App;
+export default App
