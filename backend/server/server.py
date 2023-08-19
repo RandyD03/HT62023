@@ -10,8 +10,8 @@ name = ''
 
 @app.route('/useradd', methods=['POST'])
 def useradd():
-    print(request.json[""])
     name = request.json[""]
+
     
     return name
 
@@ -21,3 +21,27 @@ def listusers():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+"""
+JSON SCHEMAS
+
+POST:
+{
+    "boxes": [{
+        "name": ''
+        "width": 
+        "length":
+        "height":
+    }],
+    "images": [{
+        "front": '',    // base64 string
+        "side": ''      // base64 string
+        }]
+    
+}
+
+GET:
+{
+
+}
+"""
