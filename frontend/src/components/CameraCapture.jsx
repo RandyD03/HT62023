@@ -4,7 +4,6 @@ function CameraCapture({ deviceId }) {
     const videoRef = useRef(null)
     const photoRef = useRef(null)
     const [hasPhoto, setHasPhoto] = useState(false)
-    const videoId = []
 
     const getVideo = () => {
         const constraints = {
@@ -28,7 +27,6 @@ function CameraCapture({ deviceId }) {
     }
 
     const takePhoto = () => {
-        console.log(videoId)
         const width = 414
         const height = width / (16 / 9)
 
