@@ -1,11 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import BinCanvas from './components/BinCanvas';
 
 function App() {
 
   //Data from backend
   const [data, setData] = useState([])
 
+  const boxes = [
+    {
+      transparent: true,
+      position: [0, 0, 0],
+      size: [5, 5, 5],
+      color: "grey"
+    },
+    {
+      transparent: false,
+      position: [0, 0, 0],
+      size: [1, 1, 1],
+      color: "red"
+    }
+  ]
 
   useEffect(() => {
     getDatas()
@@ -40,6 +55,7 @@ function App() {
   return (
     <div>
       {data}
+      <BinCanvas boxes={boxes} />
 
       <form onSubmit={handleSubmit}>
         <div>Submit photo here</div>
