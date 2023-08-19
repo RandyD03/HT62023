@@ -16,7 +16,7 @@ def midPoint(ptA, ptB):
 REFERENCE_WIDTH = 10
 
 
-def getObjectMidpoint(image):
+def getObjectMeasurement(image):
     #convert image to grayscale, and blur it slightly
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  
     gray = cv2.GaussianBlur(gray, (7, 7), 0)
@@ -32,9 +32,9 @@ def getObjectMidpoint(image):
         cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
 
-    # sort the contours from left-to-right and initialize the
-    # 'pixels per metric' calibration variable
-    (cnts, _) = contours.sort_contours(cnts)
+    # sort the contours from top-to-bottom and initialize the
+    # 'pixels per centimetre' calibration variable
+    (cnts, _) = contours.sort_contours(cnts, "top-to-bottom")
     pixelsPerCenti = None
 
     # loop over the contours individually
@@ -58,76 +58,54 @@ def getObjectMidpoint(image):
 
         # loop over the original points and draw them
         for (x, y) in box:
-		    cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
+            cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
+        
+        # unpack the ordered bounding box, then compute the midpoint
+        # between the top-left and top-right coordinates, followed by
+        # the midpoint between bottom-left and bottom-right coordinates
+        (tl, tr, br, bl) = box
+        (tltrX, tltrY) = midPoint(tl, tr)
+        (blbrX, blbrY) = midPoint(bl, br)
+        # compute the midpoint between the top-left and top-right points,
+        # followed by the midpoint between the top-righ and bottom-right
+        (tlblX, tlblY) = midPoint(tl, bl)
+        (trbrX, trbrY) = midPoint(tr, br)
+        # draw the midpoints on the image
+        cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
+        cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
+        cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
+        cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
+        # draw lines between the midpoints
+        cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
+            (255, 0, 255), 2)
+        cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
+            (255, 0, 255), 2)
+        
+        # compute the Euclidean distance between the midpoints
+        dA = dist.euclidean((tltrX, tltrY), (blbrX, blbrY))
+        dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
+        
+        # if the pixels per metric has not been initialized, then
+        # compute it as the ratio of pixels to centimetres
+        if pixelsPerCenti is None:
+            pixelsPerCenti = dB / REFERENCE_WIDTH
 
-CONVOLUTION_KERNEL = (5, 5)
-REF_OBJECT_WIDTH = 5
-REF_OBJECT_HEIGHT = 5
-REF_OBJECT_LENGTH = 5
+        # compute the size of the object
+        dimA = dA / pixelsPerCenti
+        dimB = dB / pixelsPerCenti
 
-# Take an image and identify the contours of the image
-def get_contours(
-    img, cThr=[100, 100], filter=0
-):  # lower thresholds will result in consideration of weaker outlines
-
-    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # to grayscale
-
-    imgBlur = cv2.GaussianBlur(
-        imgGray, CONVOLUTION_KERNEL, 1
-    )  # smooth out image with 5x5 convolution
-
-    imgCanny = cv2.Canny(
-        imgBlur, cThr[0], cThr[1]
-    )  # define thresholds between objects in the image (outlines of all major objects)
-
-    imgDial = cv2.dilate(
-        imgCanny, CONVOLUTION_KERNEL, iterations=3
-    )  # Increase the size of bright regions and decrease size of dark regions by pooling a convolution
-    imgThre = cv2.erode(
-        imgDial, CONVOLUTION_KERNEL, iterations=2
-    )  # Increase size of dark regions and decrease size of bright regions
-
-    contours, hierarchy = cv2.findContours(
-        imgThre, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
-    )  # retrieve contours on a binary image
-
-    itemContours = []
-
-    for c in contours:
-        area = cv2.contourArea(c)
-        if area < 1000:  # 1000 is minimum area
-            continue
-
-        peri = cv2.arcLength(c, True)  # get perimeter
-        approx = cv2.approxPolyDP(
-            c, 0.02 * peri, True
-        )  # simplifies the contour by reducing no. of vertices
-        bbox = perspective.order_points(
-            cv2.boxPoints(cv2.minAreaRect(approx))
-        )  # create bounding box
-
-        if filter > 0:
-            if len(approx) == filter:
-                itemContours.append([len(approx), area, approx, bbox, c])
-        else:
-            itemContours.append([len(approx), area, approx, bbox, c])
-
-    itemContours = sorted(
-        itemContours, key=lambda x: x[1], reverse=True
-    )  # sort by area in descending order
-
-    # Draw contours on the original image
-    for contour in itemContours:
-        cv2.drawContours(img, [contour[3].astype("int")], -1, (0, 0, 255), 3)
-
-    return img, itemContours
+        # draw the object sizes on the image
+        cv2.putText(orig, "{:.1f}cm".format(dimA),
+            (int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
+            0.65, (255, 255, 255), 2)
+        cv2.putText(orig, "{:.1f}cm".format(dimB),
+            (int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
+            0.65, (255, 255, 255), 2)
+        
+        # show the output image
+        cv2.imshow("Image", orig)
+        cv2.waitKey(0)
 
 
 img = cv2.imread("test.jpg")
-img, itemContours = get_contours(img)
-cv2.imshow("item", img)
-cv2.waitKey(10000)
-if len(itemContours) > 0:
-    biggest = itemContours[0][
-        2
-    ]  # Get the simplified contour of the largest item contour
+getObjectMeasurement(img)
