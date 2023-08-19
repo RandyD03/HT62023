@@ -5,3 +5,4 @@ pip install scipy
 pip install flask
 pip install flask_restful
 pip install py3dbp
+pip install flask_cors
