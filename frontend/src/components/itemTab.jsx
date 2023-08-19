@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import CameraCapture from "./CameraCapture"
 function ItemTab() {
-    const [videoIds, setVideoIds] = useState([])
-    const [newImages, setNewImages] = useState([])
     const videoRef1 = useRef(null)
     const photoRef1 = useRef(null)
     const videoRef2 = useRef(null)
@@ -23,7 +21,8 @@ function ItemTab() {
                     const filteredVideoIds = devices
                         .filter((device) => device.kind === "videoinput")
                         .map((device) => device.deviceId)
-                    setVideoIds(filteredVideoIds)
+                    getVideo(filteredVideoIds[0], videoRef1)
+                    getVideo(filteredVideoIds[1], videoRef2)
                 })
                 .catch((err) => {
                     console.error(`${err.name}: ${err.message}`)
@@ -51,10 +50,6 @@ function ItemTab() {
                 console.log(err)
             })
     }
-    useEffect(() => {
-        getVideo(videoIds[0], videoRef1)
-        getVideo(videoIds[1], videoRef2)
-    }, [videoIds])
 
     const takePhoto = () => {
         const width = 414
@@ -89,19 +84,14 @@ function ItemTab() {
             [[photo1, photo2]]
         )
     }
-    // {videoIds.map((videoId, index) => (
-    //     <Box>
-    //         {/* <div key={index}>{videoId}</div> */}
-    //         <CameraCapture deviceId={videoId} />
-    //     </Box>
-    // ))}
+
     return (
         <Grid templateColumns="4fr 1fr" height="100%" gap={2}>
             <GridItem>
                 <Box>
                     <video ref={videoRef1}></video>
-                    <canvas ref={photoRef1}></canvas>
                     <video ref={videoRef2}></video>
+                    <canvas ref={photoRef1}></canvas>
                     <canvas ref={photoRef2}></canvas>
                 </Box>
             </GridItem>
@@ -109,7 +99,9 @@ function ItemTab() {
                 <Button width="100%" onClick={takePhoto}>
                     Capture
                 </Button>
-                <Button onClick={handleImageUpload}>Submit</Button>
+                <Button width="100%" onClick={handleImageUpload}>
+                    Submit
+                </Button>
             </GridItem>
         </Grid>
     )
