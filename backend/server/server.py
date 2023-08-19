@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 
-# from cv.imageProcessing import processAllImages
+from cv.imageProcessing import processAllImages
 
 BOXES = []
 
