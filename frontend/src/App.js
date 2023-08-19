@@ -15,13 +15,15 @@ function App() {
       transparent: true,
       position: [0, 0, 0],
       size: [5, 5, 5],
-      color: "grey"
+      color: "grey",
+      id: 1,
     },
     {
       transparent: false,
       position: [0, 0, 0],
       size: [1, 1, 1],
-      color: "red"
+      color: "red",
+      id: 2,
     }
   ]
   function getDatas() {
