@@ -6,38 +6,12 @@ import { Box, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react"
 import CameraCapture from "./components/CameraCapture"
 import BoxTab from "./components/boxTab"
 import ResultTab from "./components/resultsTab"
+import ItemTab from "./components/itemTab"
 
 function App() {
     //Data from backend
     const [data, setData] = useState([])
     const [boxes, setBoxes] = useState([])
-    const [videoIds, setVideoIds] = useState([])
-    const [newImages, setNewImages] = useState([])
-
-    useEffect(() => {
-        if (!navigator.mediaDevices?.enumerateDevices) {
-            console.log("enumerateDevices() not supported.")
-        } else {
-            navigator.mediaDevices
-                .enumerateDevices()
-                .then((devices) => {
-                    console.log(devices)
-                    const filteredVideoIds = devices
-                        .filter(
-                            (device) =>
-                                device.kind === "videoinput" &&
-                                (device.label === "HD Web Camera" ||
-                                    device.label === "HD Pro Webcam C920")
-                        )
-                        .map((device) => device.deviceId)
-
-                    setVideoIds(filteredVideoIds)
-                })
-                .catch((err) => {
-                    console.error(`${err.name}: ${err.message}`)
-                })
-        }
-    }, [])
 
     const handleBoxSubmit = (event, width, length, height, name, id) => {
         event.preventDefault()
@@ -56,13 +30,6 @@ function App() {
 
     const handleBoxDelete = (id) => {
         setBoxes((prevBoxes) => prevBoxes.filter((v) => v.id !== id))
-    }
-
-    async function handleImageUpload() {
-        const annotatedImages = await axios.post(
-            "http://127.0.0.1:5000/processImages",
-            newImages
-        )
     }
 
     function getDatas() {
@@ -113,7 +80,7 @@ function App() {
     return (
         <Box maxHeight="100vh" height="100vh">
             {data}
-            <Tabs height="100%">
+            <Tabs height="100%" align="center">
                 <TabList height="auto">
                     <Tab>Scan Item</Tab>
                     <Tab>Input Box</Tab>
@@ -122,7 +89,7 @@ function App() {
 
                 <TabPanels height="100%">
                     <TabPanel>
-                        <p>one!</p>
+                        <ItemTab />
                     </TabPanel>
                     <TabPanel height="100%">
                         <BoxTab
@@ -149,14 +116,6 @@ function App() {
                     <input onChange={handleChange} />
                     <button type="submit">Add</button>
                 </form> */}
-            </Box>
-            <Box>
-                {videoIds.map((videoId, index) => (
-                    <Box>
-                        {/* <div key={index}>{videoId}</div> */}
-                        <CameraCapture deviceId={videoId} />
-                    </Box>
-                ))}
             </Box>
         </Box>
     )
