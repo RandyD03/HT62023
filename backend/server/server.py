@@ -35,6 +35,7 @@ def processImages():
     request_data = request.json
 
     imageDimensions = processAllImages(request_data)
+    print(imageDimensions)
     return []
 
 
