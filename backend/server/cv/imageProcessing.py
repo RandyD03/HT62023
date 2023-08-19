@@ -20,8 +20,7 @@ def midPoint(ptA, ptB):
 
 def decodeImages(base):
     # decode base64 string data -- [front, side]
-    print(base[0])
-    print(base64.b64decode(base[0]))
+
     decoded_data = [base64.b64decode(base[0]), base64.b64decode(base[1])]
 
     # write the decoded data back to original format in  file
