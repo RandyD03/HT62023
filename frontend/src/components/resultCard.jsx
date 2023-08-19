@@ -1,6 +1,6 @@
-import { Card, HStack, Grid, GridItem } from "@chakra-ui/react";
+import { Card, HStack } from "@chakra-ui/react"
 
-import BoxCard from "./boxCard";
+import BoxCard from "./boxCard"
 
 function ResultCard({ props }) {
     return (
@@ -16,7 +16,7 @@ function ResultCard({ props }) {
                 ))}
             </HStack>
         </Card>
-    );
+    )
 }
 
-export default ResultCard;
+export default ResultCard

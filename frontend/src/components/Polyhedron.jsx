@@ -1,7 +1,8 @@
-import { useRef } from 'react'
-import { useControls } from 'leva'
-import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber'
+import * as THREE from "three"
+
+import { useControls } from "leva"
+import { useFrame } from "@react-three/fiber"
+import { useRef } from "react"
 
 export default function Polyhedron(props) {
     const ref = useRef()
@@ -26,7 +27,7 @@ export default function Polyhedron(props) {
             },
         },
         color: {
-            value: 'lime',
+            value: "lime",
             onChange: (v) => {
                 ref.current.material.color = new THREE.Color(v)
             },

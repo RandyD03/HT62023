@@ -1,14 +1,17 @@
-import { Box, Grid, Button, GridItem } from "@chakra-ui/react"
-import { useState, useEffect, useRef } from "react"
-import axios from "axios"
+import { Box, Button, Grid, GridItem } from "@chakra-ui/react"
+import { useEffect, useRef, useState } from "react"
+
 import CameraCapture from "./CameraCapture"
+import axios from "axios"
+
 function ItemTab() {
     const videoRef1 = useRef(null)
     const photoRef1 = useRef(null)
     const videoRef2 = useRef(null)
     const photoRef2 = useRef(null)
-    const [photo1, setPhoto1] = useState("null")
-    const [photo2, setPhoto2] = useState("null")
+    const [photo1, setPhoto1] = useState("")
+    const [photo2, setPhoto2] = useState("")
+    const [annotatedImages, setAnnotatedImages] = useState("")
 
     useEffect(() => {
         if (!navigator.mediaDevices?.enumerateDevices) {
@@ -80,7 +83,8 @@ function ItemTab() {
             "http://127.0.0.1:5000/processImages",
             [[photo1, photo2]]
         )
-        console.log(annotatedImages);
+        setAnnotatedImages(annotatedImages.data[1].frontImg)
+        console.log(annotatedImages.data[1].frontImg)
     }
 
     return (
@@ -91,6 +95,7 @@ function ItemTab() {
                     <video ref={videoRef2}></video>
                     <canvas ref={photoRef1}></canvas>
                     <canvas ref={photoRef2}></canvas>
+                    <img src={`data:image/jpeg;base64,${annotatedImages}`} />
                 </Box>
             </GridItem>
             <GridItem>

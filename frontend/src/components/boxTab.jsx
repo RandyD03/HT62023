@@ -1,23 +1,23 @@
 import {
     Box,
-    Flex,
-    Spacer,
     Button,
+    Center,
+    Flex,
     Grid,
-    Input,
     GridItem,
+    Heading,
+    Input,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
     NumberInput,
     NumberInputField,
     NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
+    Spacer,
     VStack,
-    Center,
-    Heading,
 } from "@chakra-ui/react"
-import { AddIcon } from "@chakra-ui/icons"
-
 import React, { useState } from "react"
+
+import { AddIcon } from "@chakra-ui/icons"
 import BoxCard from "./boxCard"
 
 function BoxTab({ props }) {
