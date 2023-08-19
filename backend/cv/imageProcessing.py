@@ -79,14 +79,15 @@ def get_contours(
 
     # Draw contours on the original image
     for contour in itemContours:
-        cv2.drawContours(img, contour[4], -1, (0, 0, 255), 3)
+        cv2.drawContours(img, [contour[3].astype("int")], -1, (0, 0, 255), 3)
 
     return img, itemContours
+
 
 img = cv2.imread("test.jpg")
 img, itemContours = get_contours(img)
 cv2.imshow("item", img)
-cv2.waitKey(5000)
+cv2.waitKey(10000)
 if len(itemContours) > 0:
     biggest = itemContours[0][
         2
