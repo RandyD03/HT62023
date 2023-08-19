@@ -14,12 +14,12 @@ import {
     VStack,
     Center,
     Heading,
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 
-import React, { useState } from "react";
-import BoxCard from "./boxCard";
-import BinCanvas from "./BinCanvas";
-import ResultCard from "./resultCard";
+import React, { useState } from "react"
+import BoxCard from "./boxCard"
+import BinCanvas from "./BinCanvas"
+import ResultCard from "./resultCard"
 const boxes3d = [
     {
         transparent: true,
@@ -33,7 +33,7 @@ const boxes3d = [
         size: [1, 1, 1],
         color: "red",
     },
-];
+]
 
 function ResultsTab({ props }) {
     return (
@@ -161,7 +161,7 @@ function ResultsTab({ props }) {
                 {/* <BinCanvas boxes={boxes3d} /> */}
             </GridItem>
         </Grid>
-    );
+    )
 }
 
-export default ResultsTab;
+export default ResultsTab

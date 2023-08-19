@@ -14,20 +14,20 @@ import {
     VStack,
     Center,
     Heading,
-} from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+} from "@chakra-ui/react"
+import { AddIcon } from "@chakra-ui/icons"
 
-import React, { useState } from "react";
-import BoxCard from "./boxCard";
+import React, { useState } from "react"
+import BoxCard from "./boxCard"
 
 function BoxTab({ props }) {
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const [length, setLength] = useState(0);
-    const [name, setName] = useState("");
-    const [id, setId] = useState(0);
+    const [width, setWidth] = useState(0)
+    const [height, setHeight] = useState(0)
+    const [length, setLength] = useState(0)
+    const [name, setName] = useState("")
+    const [id, setId] = useState(0)
     return (
-        <Grid templateColumns="6fr 4fr" height="100%" gap={2}>
+        <Grid templateColumns="4fr 1fr" height="100%" gap={2}>
             <GridItem>
                 {props.boxes.length == 0 ? (
                     <Center height="100%">
@@ -60,7 +60,7 @@ function BoxTab({ props }) {
                         <Input
                             placeholder="Name"
                             onChange={(e) => {
-                                setName(e.target.value);
+                                setName(e.target.value)
                             }}
                             value={name}
                         />
@@ -108,12 +108,12 @@ function BoxTab({ props }) {
                                     height,
                                     name,
                                     id
-                                );
-                                setName("");
-                                setLength(0);
-                                setWidth(0);
-                                setHeight(0);
-                                setId((id) => id + 1);
+                                )
+                                setName("")
+                                setLength(0)
+                                setWidth(0)
+                                setHeight(0)
+                                setId((id) => id + 1)
                             }}
                             leftIcon={<AddIcon />}
                         >
@@ -123,7 +123,7 @@ function BoxTab({ props }) {
                 </Flex>
             </GridItem>
         </Grid>
-    );
+    )
 }
 
-export default BoxTab;
+export default BoxTab
