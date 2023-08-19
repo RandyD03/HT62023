@@ -15,6 +15,7 @@ import {
     Center,
     Heading,
 } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 
 import React, { useState } from "react";
 import BoxCard from "./boxCard";
@@ -26,7 +27,7 @@ function BoxTab({ props }) {
     const [name, setName] = useState("");
     const [id, setId] = useState(0);
     return (
-        <Grid templateColumns="6fr 4fr" height="100%">
+        <Grid templateColumns="6fr 4fr" height="100%" gap={2}>
             <GridItem>
                 {props.boxes.length == 0 ? (
                     <Center height="100%">
@@ -37,7 +38,7 @@ function BoxTab({ props }) {
                 ) : (
                     <Grid
                         gap={4}
-                        p="10"
+                        p="4"
                         templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
                         overflowY="scroll"
                         maxHeight="100vh"
@@ -114,8 +115,9 @@ function BoxTab({ props }) {
                                 setHeight(0);
                                 setId((id) => id + 1);
                             }}
+                            leftIcon={<AddIcon />}
                         >
-                            Submit
+                            Add
                         </Button>
                     </VStack>
                 </Flex>
