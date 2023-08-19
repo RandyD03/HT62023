@@ -157,7 +157,7 @@ function ResultsTab({ props }) {
                 </Grid>
             </GridItem>
             <GridItem>
-                <Button>Compute Results</Button>
+                <Button width="100%">Compute Results</Button>
                 {/* <BinCanvas boxes={boxes3d} /> */}
             </GridItem>
         </Grid>
