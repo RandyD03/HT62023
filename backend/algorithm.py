@@ -56,5 +56,9 @@ class Classifier:
         pass
 
     def classify(self, start_ind, end_ind):
+        # find most optimal box for one item
+        if start_ind == end_ind:
+            for box in self.boxes:
         for i in range(start_ind, end_ind + 1):
-            pass
+            self.classify(self, start_ind, i)
+            self.classify(self, i + 1, end_ind)
