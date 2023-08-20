@@ -51,9 +51,7 @@ const boxes3d = [
 function ResultsTab({ props }) {
     const [sanitizedResults, setSanitizedResults] = useState([])
     useEffect(() => {
-        console.log("results use effect")
         // global store of all items and boxes, passed from App.js
-        console.log(props)
         let items = props.items
         let boxes = props.boxes
         let results = props.results
@@ -65,42 +63,22 @@ function ResultsTab({ props }) {
         // }
         results.forEach((result) => {
             const boxId = parseInt(result["boxId"])
-            let row = { box: boxes[boxId], items: [] }
+            let row = {
+                box: boxes.filter((box) => box.id === boxId)[0],
+                items: [],
+            }
             result.items.forEach((item) => {
                 const itemId = parseInt(item["itemId"])
-                row["items"].push(items[itemId])
+                row["items"].push(items.filter((item) => item.id === itemId)[0])
             })
             rows.push(row)
         })
         setSanitizedResults(rows)
+        console.log(rows)
     }, [props.results])
     return (
         <Grid templateColumns="2fr 1fr" height="100%" gap={2}>
             <GridItem overflowX="scroll">
-                {/* {props.boxes.length == 0 ? (
-                    <Center height="100%">
-                        <Heading color="blackAlpha.300">
-                            No results computed yet
-                        </Heading>
-                    </Center>
-                ) : (
-                    <Grid
-                        gap={4}
-                        p="10"
-                        templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-                        overflowY="scroll"
-                        maxHeight="100vh"
-                    >
-                        {props.boxes.map((box) => (
-                            <BoxCard
-                                props={{
-                                    box: box,
-                                    handleBoxDelete: props.handleBoxDelete,
-                                }}
-                            />
-                        ))}
-                    </Grid>
-                )} */}
                 <Grid gap={4}>
                     {sanitizedResults.map((result) => (
                         <GridItem>
@@ -108,8 +86,6 @@ function ResultsTab({ props }) {
                                 props={{
                                     box: result.box,
                                     items: result.items,
-                                    handleBoxDelete: props.handleBoxDelete,
-                                    handleItemDelete: props.handleItemDelete,
                                 }}
                             />
                         </GridItem>

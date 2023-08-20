@@ -11,14 +11,12 @@ function ResultCard({ props }) {
                 <BoxCard
                     props={{
                         box: props.box,
-                        handleBoxDelete: props.handleBoxDelete,
                     }}
                 />
                 {props.items.map((item) => (
                     <ItemCard
                         props={{
                             item: item,
-                            handleItemDelete: props.handleItemDelete,
                         }}
                     />
                 ))}

@@ -17,7 +17,7 @@ import boxLogo from "../images/box.png"
 
 function BoxCard({ props }) {
     return (
-        <Card boxShadow="lg">
+        <Card boxShadow="lg" height="100%">
             <Center h="100%" p="8">
                 <Image
                     src={boxLogo}
@@ -37,14 +37,18 @@ function BoxCard({ props }) {
                 </Stack>
             </CardBody>
             <CardFooter>
-                <Button
-                    variant="solid"
-                    colorScheme="red"
-                    onClick={() => props.handleBoxDelete(props.box.id)}
-                    leftIcon={<DeleteIcon />}
-                >
-                    Delete
-                </Button>
+                {props.handleBoxDelete === undefined ? (
+                    ""
+                ) : (
+                    <Button
+                        variant="solid"
+                        colorScheme="red"
+                        onClick={() => props.handleBoxDelete(props.box.id)}
+                        leftIcon={<DeleteIcon />}
+                    >
+                        Delete
+                    </Button>
+                )}
             </CardFooter>
         </Card>
     )

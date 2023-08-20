@@ -37,6 +37,7 @@ function App() {
         // dummy code for testing, match each box with each item
 
         let localResults = []
+        let itemCnt = items.length - 1
         for (let i = 0; i < boxes.length; i++) {
             // still items to add
             if (i < items.length) {
@@ -113,13 +114,6 @@ function App() {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            <Box>
-                {/* <form onSubmit={handleSubmit}>
-                    <div>Submit photo here</div>
-                    <input onChange={handleChange} />
-                    <button type="submit">Add</button>
-                </form> */}
-            </Box>
         </Box>
     )
 }
