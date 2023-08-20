@@ -176,6 +176,8 @@ function ItemTab({ props }) {
                             width="100%"
                             onClick={handleImageUpload}
                             leftIcon={<BsSend />}
+                            isLoading={loading}
+                            loadingText="Analyzing"
                         >
                             Submit
                         </Button>
