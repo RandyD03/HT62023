@@ -1,5 +1,6 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
+import axios from "axios"
 
 import BoxTab from "./components/boxTab"
 import ItemTab from "./components/itemTab"
@@ -29,10 +30,14 @@ function App() {
     }
 
     const handleResultCompute = async () => {
-        const result = await axios.post(
+        const result = (await axios.post(
             "http://127.0.0.1:5000/computeResult",
             { boxes, items }
-        )
+        )).data;
+
+        for (let i = 0; i < result.length; i++) {
+
+        }
     }
 
     const handleItemSubmit = (event, width, length, height, name, id) => {
@@ -85,6 +90,8 @@ function App() {
                         <ResultTab
                             props={{
                                 boxes: boxes,
+                                items: items,
+                                result: result,
                                 handleResultCompute: handleResultCompute,
                                 handleBoxDelete: handleBoxDelete,
                             }}

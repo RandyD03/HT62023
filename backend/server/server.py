@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from cv.imageProcessing import processAllImages
 import packer
+import json
 
 BOXES = []
 
@@ -42,6 +43,45 @@ def processImages():
 @app.route("/computeResult", methods=["POST"])
 def computeResult():
     request_data = request.json
+
+    boxes = [{
+        "width": 2,
+        "height": 2,
+        "length": 2,
+        "name": "small",
+        "id": 0
+        },
+    {
+        "width": 4,
+        "height": 4,
+        "length": 4,
+        "name": "medium",
+        "id": 1
+    }    
+    ]
+
+    items = [
+        {
+        "width":  1,
+        "height": 1,
+        "length": 1,
+        "name": "doritos",
+        "id": 0
+        },
+    {
+        "width": 1,
+        "height": 1,
+        "length": 1,
+        "name": "chipmunk",
+        "id": 1
+    }    
+    ]
+
+    result = packer.packItems(items, boxes)
+
+    return json.dumps(result)
+
+
 
 
 if __name__ == "__main__":
