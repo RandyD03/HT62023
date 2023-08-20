@@ -33,6 +33,7 @@ function ItemTab({ props }) {
     const [length, setLength] = useState(0)
     const [name, setName] = useState("")
     const [id, setId] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         if (!navigator.mediaDevices?.enumerateDevices) {
@@ -103,15 +104,24 @@ function ItemTab({ props }) {
     }
 
     async function handleImageUpload(e) {
-        // const annotatedImages = await axios.post(
-        //     "http://127.0.0.1:5000/processImages",
-        //     [[photo1, photo2]]
-        // )
-        props.handleItemSubmit(e, width, length, height, name, id)
+        setLoading(true)
+        const annotatedImages = await axios.post(
+            "http://127.0.0.1:5000/processImages",
+            [[photo1, photo2]]
+        )
+        props.handleItemSubmit(
+            e,
+            width,
+            length,
+            height,
+            name,
+            id,
+            annotatedImages.data.frontImg
+        )
         setId((prevId) => prevId + 1)
         setName("")
-        // setAnnotatedImages(annotatedImages.data[1].frontImg)
-        // console.log(annotatedImages.data[1].frontImg)
+        setAnnotatedImages(annotatedImages.data.frontImg)
+        setLoading(false)
     }
 
     return (
@@ -180,9 +190,7 @@ function ItemTab({ props }) {
                             style={{ width: "100%" }}
                             ref={photoRef2}
                         ></canvas>
-                        <img
-                            src={`data:image/jpeg;base64,${annotatedImages}`}
-                        />
+                        <img src={annotatedImages} />
                     </VStack>
                 </Flex>
             </GridItem>

@@ -22,7 +22,7 @@ function ItemCard({ props }) {
         <Card boxShadow="lg" height="100%">
             <Center h="100%" p="8">
                 <Image
-                    src={props.image}
+                    src={props.item.img}
                     borderRadius="dark-lg"
                     minWidth="100px"
                     maxWidth="100px"
