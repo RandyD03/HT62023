@@ -27,7 +27,8 @@ function ItemTab({ props }) {
     const photoRef2 = useRef(null)
     const [photo1, setPhoto1] = useState("")
     const [photo2, setPhoto2] = useState("")
-    const [annotatedImages, setAnnotatedImages] = useState("")
+    const [frontImage, setFrontImage] = useState("")
+    const [sideImage, setSideImage] = useState("")
     const [name, setName] = useState("")
     const [id, setId] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -118,7 +119,8 @@ function ItemTab({ props }) {
         console.log(annotatedImages.data)
         setId((prevId) => prevId + 1)
         setName("")
-        setAnnotatedImages(annotatedImages.data.frontImg)
+        setFrontImage(annotatedImages.data.frontImg)
+        setSideImage(annotatedImages.data.sideImg)
         setLoading(false)
     }
 
@@ -188,7 +190,8 @@ function ItemTab({ props }) {
                             style={{ width: "100%" }}
                             ref={photoRef2}
                         ></canvas>
-                        <img src={annotatedImages} />
+                        <img src={frontImage} />
+                        <img src={sideImage} />
                     </VStack>
                 </Flex>
             </GridItem>
