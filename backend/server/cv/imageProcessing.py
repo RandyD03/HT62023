@@ -11,6 +11,7 @@ import cv2
 import base64
 import json
 import uuid
+import os
 
 # width of the top-most object used for reference measurements in centimetres
 REFERENCE_WIDTH = 1.5
@@ -236,6 +237,9 @@ def processAllImages(imagePairs):
         front_filename = f"front.jpg"
         side_filename = f"side.jpg"
 
+        if not os.path.exists("imgStore"):
+            os.makedirs("imgStore")
+            
         cv2.imwrite(f"imgStore/{front_filename}", frontDimensions[1])
         cv2.imwrite(f"imgStore/{side_filename}", sideDimensions[1])
 

@@ -79,22 +79,38 @@ class Classifier:
 
 def packItems(items, boxes):
     packer = py3dbp.Packer()
+    itemDict = {}
+    boxDict = {}
 
     for box in boxes:
-        packer.add_bin(
-            py3dbp.Bin(box.name, box.width, box.height, box.length, INFINITY)
-        )
+        newBin = py3dbp.Bin(box['name'], (box['width']), box['height'], box['length'], INFINITY)
+        packer.add_bin(newBin)
+        boxDict[newBin] = box['id']
 
     for item in items:
-        packer.add_item(py3dbp.Item(item.name, item.width, item.height, item.length, 0))
+        newItem = py3dbp.Item(item['name'], item['width'], item['height'], item['length'], 0)
+        packer.add_item(newItem)
+        itemDict[newItem] = item['id']
 
     packer.pack(distribute_items=True)
 
-    boxes = [None] * len(boxes)
-    items = [[]] * len(items)
+    result = []
 
-    for b in packer.bins:
-        pass
+    for idx, b in enumerate(packer.bins):
+        result.append({
+            "boxId": boxDict[b],
+            "items": [],
+        })
+
+        for item in b.items:
+            result[idx]['items'].append({
+                "itemId": itemDict[item],
+                "posX": float(item.position[0]), # width
+                "posY": float(item.position[1]), # height
+                "posZ": float(item.position[2]), # length
+            })
+
+    return result
 
 
 def main():
@@ -140,6 +156,7 @@ def main():
         print("FITTED ITEMS:")
         for item in b.items:
             print("====> ", item.string())
+            print(type(item.position))
 
         print("UNFITTED ITEMS:")
         for item in b.unfitted_items:
@@ -147,3 +164,5 @@ def main():
 
         print("***************************************************")
         print("***************************************************")
+
+#main()
