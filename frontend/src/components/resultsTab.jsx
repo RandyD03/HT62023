@@ -5,6 +5,7 @@ import BinCanvas from "./BinCanvas"
 import BoxCard from "./boxCard"
 import ResultCard from "./resultCard"
 
+const COLOURS = ["red", "blue", "yellow", "green", "orange", "brown", "purple"]
 const boxes3d = [
     {
         transparent: true,
@@ -50,12 +51,25 @@ const boxes3d = [
 // ]
 function ResultsTab({ props }) {
     const [sanitizedResults, setSanitizedResults] = useState([])
+    const [currentBin, setCurrentBin] = useState()
+    const [currentItems, setCurrentItems] = useState([])
+
     useEffect(() => {
         // global store of all items and boxes, passed from App.js
         let items = props.items
         let boxes = props.boxes
         let results = props.results
         let rows = []
+
+        if (props.results.length > 0) {
+            setCurrentBin(
+                props.boxes.filter(
+                    (box) => box.id === props.results[0].boxId
+                )[0]
+            )
+            setCurrentItems(props.results[0].items)
+        }
+
         // transform the above data structure into the following format for displaying
         // {
         //     box: box object
@@ -93,8 +107,10 @@ function ResultsTab({ props }) {
                 </Grid>
             </GridItem>
             <div>
-                <Button width="100%" onClick={props.handleResultCompute}>Compute Results</Button>
-                <BinCanvas boxes={boxes3d} results={props.results} />
+                <Button width="100%" onClick={props.handleResultCompute}>
+                    Compute Results
+                </Button>
+                <BinCanvas bin={currentBin} items={currentItems} />
             </div>
         </Grid>
     )

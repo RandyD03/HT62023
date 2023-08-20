@@ -16,12 +16,12 @@ const BinCanvas = (props) => {
     const { boxes } = props
 
     // items => [
-    //     {
+    //    `` {
     //         transparent: Boolean,
     //         position: [x, y, z],
     //         size: [l, w, h],
     //         color: string
-    //     }
+    //     }``
     // ]
     return (
         <Canvas className="canvas" style={{ "max-height": "700px" }}>
@@ -43,9 +43,23 @@ const BinCanvas = (props) => {
                     />
                     <SMAA />
                 </EffectComposer>
-                {boxes.map((sceneData) => (
-                    <Scene key={sceneData.id} {...sceneData} />
-                ))}
+                <Scene
+                    {...props.bin}
+                    posX={1}
+                    posY={1}
+                    posZ={1}
+                    transparent={true}
+                />
+                {props.items.map((sceneData) => {
+                    console.log(sceneData)
+                    return (
+                        <Scene
+                            key={sceneData.id}
+                            {...sceneData}
+                            transparent={false}
+                        />
+                    )
+                })}
             </Selection>
             <OrbitControls />
         </Canvas>
