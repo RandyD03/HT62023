@@ -2,30 +2,39 @@ import {
     Badge,
     Box,
     Button,
+    ButtonGroup,
     Card,
     CardBody,
     CardFooter,
     Center,
+    Editable,
+    EditableInput,
+    EditablePreview,
     Flex,
+    HStack,
     Heading,
+    IconButton,
     Image,
     ListItem,
+    NumberInput,
     Stack,
     Text,
     UnorderedList,
+    useEditableControls,
 } from "@chakra-ui/react"
+import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
 
-import { DeleteIcon } from "@chakra-ui/icons"
+import { useState } from "react"
 
 function ItemCard({ props }) {
     return (
         <Card boxShadow="lg" height="100%">
-            <Center h="100%" p="8">
+            <Center h="100%">
                 <Image
                     src={props.item.img}
                     borderRadius="dark-lg"
                     minWidth="100px"
-                    maxWidth="100px"
+                    maxWidth="100%"
                 />
             </Center>
             <CardBody>
@@ -51,14 +60,19 @@ function ItemCard({ props }) {
                 {props.handleItemDelete === undefined ? (
                     ""
                 ) : (
-                    <Button
-                        variant="solid"
-                        colorScheme="red"
-                        onClick={() => props.handleItemDelete(props.item.id)}
-                        leftIcon={<DeleteIcon />}
-                    >
-                        Delete
-                    </Button>
+                    <HStack spacing={2}>
+                        <Button
+                            variant="solid"
+                            colorScheme="red"
+                            flex="1"
+                            onClick={() =>
+                                props.handleItemDelete(props.item.id)
+                            }
+                            leftIcon={<DeleteIcon />}
+                        >
+                            Delete
+                        </Button>
+                    </HStack>
                 )}
             </CardFooter>
         </Card>

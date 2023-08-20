@@ -11,6 +11,8 @@ import {
     GridItem,
     Heading,
     Input,
+    NumberInput,
+    NumberInputField,
     VStack,
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
@@ -29,6 +31,10 @@ function ItemTab({ props }) {
     const [photo2, setPhoto2] = useState("")
     const [frontImage, setFrontImage] = useState("")
     const [sideImage, setSideImage] = useState("")
+    const [annotatedImages, setAnnotatedImages] = useState("")
+    const [width, setWidth] = useState(0)
+    const [height, setHeight] = useState(0)
+    const [length, setLength] = useState(0)
     const [name, setName] = useState("")
     const [id, setId] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -140,7 +146,7 @@ function ItemTab({ props }) {
                     <Grid
                         gap={4}
                         p="4"
-                        templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+                        templateColumns="repeat(3, 1fr)"
                         overflowY="scroll"
                         maxHeight="100vh"
                     >

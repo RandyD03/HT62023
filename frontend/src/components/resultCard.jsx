@@ -41,7 +41,14 @@ function ResultCard({ props }) {
                 p="4"
             >
                 <HStack overflowX="scroll" spacing={2}>
-                    <VStack spacing={0} textAlign="left" height="100%" pr="4">
+                    <VStack
+                        spacing={0}
+                        textAlign="left"
+                        height="100%"
+                        pr="4"
+                        alignItems="flex-start"
+                        minW="250px"
+                    >
                         <Stat>
                             <StatLabel>
                                 <Badge>Total Volume</Badge>

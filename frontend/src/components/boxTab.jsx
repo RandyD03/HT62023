@@ -39,7 +39,7 @@ function BoxTab({ props }) {
                     <Grid
                         gap={4}
                         p="4"
-                        templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+                        templateColumns="repeat(3, 1fr)"
                         overflowY="scroll"
                         maxHeight="100vh"
                     >
