@@ -103,10 +103,10 @@ function ItemTab({ props }) {
     }
 
     async function handleImageUpload(e) {
-        const annotatedImages = await axios.post(
-            "http://127.0.0.1:5000/processImages",
-            [[photo1, photo2]]
-        )
+        // const annotatedImages = await axios.post(
+        //     "http://127.0.0.1:5000/processImages",
+        //     [[photo1, photo2]]
+        // )
         props.handleItemSubmit(e, width, length, height, name, id)
         setId((prevId) => prevId + 1)
         setName("")
@@ -172,8 +172,14 @@ function ItemTab({ props }) {
 
                         <video ref={videoRef1}></video>
                         <video ref={videoRef2}></video>
-                        <canvas ref={photoRef1}></canvas>
-                        <canvas ref={photoRef2}></canvas>
+                        <canvas
+                            style={{ width: "100%" }}
+                            ref={photoRef1}
+                        ></canvas>
+                        <canvas
+                            style={{ width: "100%" }}
+                            ref={photoRef2}
+                        ></canvas>
                         <img
                             src={`data:image/jpeg;base64,${annotatedImages}`}
                         />

@@ -1,9 +1,12 @@
 import {
+    Badge,
+    Box,
     Button,
     Card,
     CardBody,
     CardFooter,
     Center,
+    Flex,
     Heading,
     Image,
     ListItem,
@@ -27,13 +30,19 @@ function BoxCard({ props }) {
                 />
             </Center>
             <CardBody>
-                <Stack spacing="3">
+                <Stack spacing="3" textAlign="left">
                     <Heading size="md">{props.box.name}</Heading>
-                    <UnorderedList>
-                        <ListItem>Length: {props.box.length}</ListItem>
-                        <ListItem>Height: {props.box.height}</ListItem>
-                        <ListItem>Width: {props.box.width}</ListItem>
-                    </UnorderedList>
+                    <Flex flexDir="column" width="100%">
+                        <Box>
+                            <Badge>Length</Badge> {props.box.length} m
+                        </Box>
+                        <Box>
+                            <Badge>Width</Badge> {props.box.height} m
+                        </Box>
+                        <Box>
+                            <Badge>Height</Badge> {props.box.width} m
+                        </Box>
+                    </Flex>
                 </Stack>
             </CardBody>
             <CardFooter>
