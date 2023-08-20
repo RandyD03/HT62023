@@ -9,7 +9,7 @@ const boxes3d = [
     {
         transparent: true,
         position: [0, 0, 0],
-        size: [5, 5, 5],
+        size: [3, 5, 5],
         color: "grey",
     },
     {
@@ -17,6 +17,18 @@ const boxes3d = [
         position: [0, 0, 0],
         size: [1, 1, 1],
         color: "red",
+    },
+    {
+        transparent: false,
+        position: [0, 1, 0],
+        size: [1, 1, 1],
+        color: "green",
+    },
+    {
+        transparent: false,
+        position: [0, 1.5, 1],
+        size: [1, 1, 1],
+        color: "blue",
     },
 ]
 
@@ -141,10 +153,10 @@ function ResultsTab({ props }) {
                     ))} */}
                 </Grid>
             </GridItem>
-            <GridItem>
+            <div>
                 <Button width="100%">Compute Results</Button>
-                {/* <BinCanvas boxes={boxes3d} /> */}
-            </GridItem>
+                <BinCanvas boxes={boxes3d} />
+            </div>
         </Grid>
     )
 }
