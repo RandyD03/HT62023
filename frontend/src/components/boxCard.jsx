@@ -34,13 +34,13 @@ function BoxCard({ props }) {
                     <Heading size="md">{props.box.name}</Heading>
                     <Flex flexDir="column" width="100%">
                         <Box>
-                            <Badge>Length</Badge> {props.box.length} m
+                            <Badge>Length</Badge> {props.box.length} cm
                         </Box>
                         <Box>
-                            <Badge>Width</Badge> {props.box.height} m
+                            <Badge>Width</Badge> {props.box.height} cm
                         </Box>
                         <Box>
-                            <Badge>Height</Badge> {props.box.width} m
+                            <Badge>Height</Badge> {props.box.width} cm
                         </Box>
                     </Flex>
                 </Stack>
