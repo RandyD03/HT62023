@@ -28,9 +28,6 @@ function ItemTab({ props }) {
     const [photo1, setPhoto1] = useState("")
     const [photo2, setPhoto2] = useState("")
     const [annotatedImages, setAnnotatedImages] = useState("")
-    const [width, setWidth] = useState(1)
-    const [height, setHeight] = useState(1)
-    const [length, setLength] = useState(1)
     const [name, setName] = useState("")
     const [id, setId] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -111,13 +108,14 @@ function ItemTab({ props }) {
         )
         props.handleItemSubmit(
             e,
-            width,
-            length,
-            height,
+            annotatedImages.data.dimensions[0],
+            annotatedImages.data.dimensions[1],
+            annotatedImages.data.dimensions[2],
             name,
             id,
             annotatedImages.data.frontImg
         )
+        console.log(annotatedImages.data)
         setId((prevId) => prevId + 1)
         setName("")
         setAnnotatedImages(annotatedImages.data.frontImg)

@@ -18,6 +18,7 @@ REFERENCE_WIDTH = 1.5
 
 COLOURS = ["red", "blue", "yellow", "green", "orange", "brown", "purple"]
 
+
 class Response:
     def __init__(self, dimensions, uniqueID, frontResult, sideResult):
         self.dimensions = dimensions
@@ -70,7 +71,7 @@ def getObjectMeasurement(image):
     (cnts, _) = contours.sort_contours(cnts, "top-to-bottom")
     cnts = sorted(cnts[0:], key=lambda c: cv2.contourArea(c), reverse=True)
 
-    pixelsPerCenti = 14
+    pixelsPerCenti = 17
 
     c = cnts[0]
     # compute the rotated bounding box of the contour
