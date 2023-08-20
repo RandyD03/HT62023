@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 
 from cv.imageProcessing import processAllImages
+import packer
 
 BOXES = []
 
@@ -36,6 +37,11 @@ def processImages():
 
     imageDimensions = processAllImages(request_data)
     return imageDimensions
+
+
+@app.route("/computeResult", methods=["POST"])
+def computeResult():
+    request_data = request.json
 
 
 if __name__ == "__main__":

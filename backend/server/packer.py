@@ -77,6 +77,26 @@ class Classifier:
         return best_arrangement
 
 
+def packItems(items, boxes):
+    packer = py3dbp.Packer()
+
+    for box in boxes:
+        packer.add_bin(
+            py3dbp.Bin(box.name, box.width, box.height, box.length, INFINITY)
+        )
+
+    for item in items:
+        packer.add_item(py3dbp.Item(item.name, item.width, item.height, item.length, 0))
+
+    packer.pack(distribute_items=True)
+
+    boxes = [None] * len(boxes)
+    items = [[]] * len(items)
+
+    for b in packer.bins:
+        pass
+
+
 def main():
     # items = [Item(1, 2, 3, "item1"), Item(4, 5, 6, "item2")]
     # boxes = [Box(10, 20, 30, "box1"), Box(100, 200, 300, "box1")]
@@ -127,7 +147,3 @@ def main():
 
         print("***************************************************")
         print("***************************************************")
-
-
-if __name__ == "__main__":
-    main()

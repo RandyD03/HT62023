@@ -8,6 +8,7 @@ import ResultTab from "./components/resultsTab"
 function App() {
     const [boxes, setBoxes] = useState([])
     const [items, setItems] = useState([])
+    const [result, setResult] = useState([])
 
     const handleBoxSubmit = (event, width, length, height, name, id) => {
         event.preventDefault()
@@ -25,6 +26,13 @@ function App() {
 
     const handleBoxDelete = (id) => {
         setBoxes((prevBoxes) => prevBoxes.filter((v) => v.id !== id))
+    }
+
+    const handleResultCompute = async () => {
+        const result = await axios.post(
+            "http://127.0.0.1:5000/computeResult",
+            { boxes, items }
+        )
     }
 
     const handleItemSubmit = (event, width, length, height, name, id) => {
@@ -77,6 +85,7 @@ function App() {
                         <ResultTab
                             props={{
                                 boxes: boxes,
+                                handleResultCompute: handleResultCompute,
                                 handleBoxDelete: handleBoxDelete,
                             }}
                         />
