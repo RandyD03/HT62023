@@ -1,18 +1,18 @@
 import {
     Box,
     Button,
+    Card,
+    CardBody,
     Center,
     Flex,
+    FormControl,
+    FormLabel,
     Grid,
     GridItem,
     Heading,
     Input,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
     NumberInput,
     NumberInputField,
-    NumberInputStepper,
-    Spacer,
     VStack,
 } from "@chakra-ui/react"
 import React, { useState } from "react"
@@ -27,7 +27,7 @@ function BoxTab({ props }) {
     const [name, setName] = useState("")
     const [id, setId] = useState(0)
     return (
-        <Grid templateColumns="4fr 1fr" height="100%" gap={2}>
+        <Grid templateColumns="2fr 1fr" height="100%" gap={2}>
             <GridItem>
                 {props.boxes.length == 0 ? (
                     <Center height="100%">
@@ -57,46 +57,46 @@ function BoxTab({ props }) {
             <GridItem>
                 <Flex flexDir="column" height="100%" alignContent="flex-start">
                     <VStack width="100%">
-                        <Input
-                            placeholder="Name"
-                            onChange={(e) => {
-                                setName(e.target.value)
-                            }}
-                            value={name}
-                        />
-                        <NumberInput
-                            onChange={(length) => setLength(length)}
-                            value={length}
-                            width="100%"
-                        >
-                            <NumberInputField placeholder="Length" />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                        <NumberInput
-                            onChange={(width) => setWidth(width)}
-                            value={width}
-                            width="100%"
-                        >
-                            <NumberInputField placeholder="Width" />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                        <NumberInput
-                            onChange={(height) => setHeight(height)}
-                            value={height}
-                            width="100%"
-                        >
-                            <NumberInputField placeholder="Height" />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
+                        <FormControl>
+                            <FormLabel>Name</FormLabel>
+                            <Input
+                                placeholder="My Box 1"
+                                onChange={(e) => {
+                                    setName(e.target.value)
+                                }}
+                                value={name}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Length</FormLabel>
+                            <NumberInput
+                                onChange={(length) => setLength(length)}
+                                value={length}
+                                width="100%"
+                            >
+                                <NumberInputField placeholder="Length" />
+                            </NumberInput>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Width</FormLabel>
+                            <NumberInput
+                                onChange={(width) => setWidth(width)}
+                                value={width}
+                                width="100%"
+                            >
+                                <NumberInputField placeholder="Width" />
+                            </NumberInput>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Height</FormLabel>
+                            <NumberInput
+                                onChange={(height) => setHeight(height)}
+                                value={height}
+                                width="100%"
+                            >
+                                <NumberInputField placeholder="Height" />
+                            </NumberInput>
+                        </FormControl>
                         <Button
                             width="100%"
                             colorScheme="teal"

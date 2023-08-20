@@ -2,15 +2,12 @@ import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 
 import BoxTab from "./components/boxTab"
-import CameraCapture from "./components/CameraCapture"
 import ItemTab from "./components/itemTab"
 import ResultTab from "./components/resultsTab"
-import axios from "axios"
 
 function App() {
-    //Data from backend
-    const [data, setData] = useState([])
     const [boxes, setBoxes] = useState([])
+    const [items, setItems] = useState([])
 
     const handleBoxSubmit = (event, width, length, height, name, id) => {
         event.preventDefault()
@@ -24,24 +21,32 @@ function App() {
                 id: id,
             },
         ])
-        console.log(boxes)
     }
 
     const handleBoxDelete = (id) => {
         setBoxes((prevBoxes) => prevBoxes.filter((v) => v.id !== id))
     }
 
-    const [inputs, setInputs] = useState()
+    const handleItemSubmit = (event, width, length, height, name, id) => {
+        event.preventDefault()
+        setItems((prevItems) => [
+            ...prevItems,
+            {
+                width: width,
+                length: length,
+                height: height,
+                name: name === "" ? `Item ${id + 1}` : name,
+                id: id,
+            },
+        ])
+    }
 
-    const handleChange = (event) => {
-        const name = event.target.name
-        const value = event.target.value
-        setInputs((prevInputs) => ({ ...prevInputs, [name]: value }))
+    const handleItemDelete = (id) => {
+        setItems((prevItems) => prevItems.filter((v) => v.id !== id))
     }
 
     return (
         <Box maxHeight="100vh" height="100vh">
-            {data}
             <Tabs height="100%" align="center">
                 <TabList height="auto">
                     <Tab>Scan Item</Tab>
@@ -51,7 +56,13 @@ function App() {
 
                 <TabPanels height="100%">
                     <TabPanel>
-                        <ItemTab />
+                        <ItemTab
+                            props={{
+                                items: items,
+                                handleItemSubmit: handleItemSubmit,
+                                handleItemDelete: handleItemDelete,
+                            }}
+                        />
                     </TabPanel>
                     <TabPanel height="100%">
                         <BoxTab

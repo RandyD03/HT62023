@@ -13,14 +13,13 @@ import {
 } from "@chakra-ui/react"
 
 import { DeleteIcon } from "@chakra-ui/icons"
-import boxLogo from "../images/box.png"
 
-function BoxCard({ props }) {
+function ItemCard({ props }) {
     return (
         <Card boxShadow="lg">
             <Center h="100%" p="8">
                 <Image
-                    src={boxLogo}
+                    src={props.image}
                     borderRadius="dark-lg"
                     minWidth="100px"
                     maxWidth="100px"
@@ -28,11 +27,11 @@ function BoxCard({ props }) {
             </Center>
             <CardBody>
                 <Stack spacing="3">
-                    <Heading size="md">{props.box.name}</Heading>
+                    <Heading size="md">{props.item.name}</Heading>
                     <UnorderedList>
-                        <ListItem>Length: {props.box.length}</ListItem>
-                        <ListItem>Height: {props.box.height}</ListItem>
-                        <ListItem>Width: {props.box.width}</ListItem>
+                        <ListItem>Length: {props.item.length}</ListItem>
+                        <ListItem>Height: {props.item.height}</ListItem>
+                        <ListItem>Width: {props.item.width}</ListItem>
                     </UnorderedList>
                 </Stack>
             </CardBody>
@@ -40,7 +39,7 @@ function BoxCard({ props }) {
                 <Button
                     variant="solid"
                     colorScheme="red"
-                    onClick={() => props.handleBoxDelete(props.box.id)}
+                    onClick={() => props.handleItemDelete(props.item.id)}
                     leftIcon={<DeleteIcon />}
                 >
                     Delete
@@ -50,4 +49,4 @@ function BoxCard({ props }) {
     )
 }
 
-export default BoxCard
+export default ItemCard
