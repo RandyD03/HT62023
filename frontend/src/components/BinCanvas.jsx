@@ -24,7 +24,7 @@ const BinCanvas = (props) => {
     //     }
     // ]
     return (
-        <Canvas>
+        <Canvas className="canvas" style={{ "max-height": "700px" }}>
             <ambientLight />
             <Selection>
                 <EffectComposer autoClear={false}>
