@@ -158,8 +158,8 @@ def processAllImages(imagePairs):
         frontDimensions = getObjectMeasurement(images[0])
         sideDimensions = getObjectMeasurement(images[1])
 
-        front_filename = f"front.jpg"
-        side_filename = f"side.jpg"
+        front_filename = f"front_{uuid.uuid4()}.jpg"
+        side_filename = f"side_{uuid.uuid4()}.jpg"
 
         if not os.path.exists("imgStore"):
             os.makedirs("imgStore")

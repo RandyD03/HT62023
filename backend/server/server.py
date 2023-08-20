@@ -55,7 +55,6 @@ def processImages():
     # #Upload to s3
     front_image = "imgStore/" + imageDimensions["frontImg"]
     side_image = "imgStore/" + imageDimensions["sideImg"]
-
     s3.upload_file(front_image, str(S3_BUCKET), imageDimensions["frontImg"])
     s3.upload_file(side_image, str(S3_BUCKET), imageDimensions["sideImg"])
     imageDimensions[
