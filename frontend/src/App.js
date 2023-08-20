@@ -5,7 +5,6 @@ import axios from "axios"
 import BoxTab from "./components/boxTab"
 import ItemTab from "./components/itemTab"
 import ResultTab from "./components/resultsTab"
-import axios from "axios"
 
 function App() {
     const [boxes, setBoxes] = useState([])
@@ -31,12 +30,13 @@ function App() {
     }
 
     const handleResultCompute = async () => {
-        // const result = await axios.post("http://127.0.0.1:5000/computeResult", {
-        //     boxes,
-        //     items,
-        // })
+        const result = await axios.post("http://127.0.0.1:5000/computeResult", {
+            boxes,
+            items,
+        })
         // dummy code for testing, match each box with each item
 
+        console.log(result.data);
         let localResults = []
         let itemCnt = items.length - 1
         for (let i = 0; i < boxes.length; i++) {
@@ -52,8 +52,8 @@ function App() {
                 })
             }
         }
-        console.log(localResults)
-        setResults(localResults)
+
+        setResults(result.data);
     }
 
     const handleItemSubmit = (event, width, length, height, name, id) => {
