@@ -13,7 +13,7 @@ import json
 import uuid
 
 # width of the top-most object used for reference measurements in centimetres
-REFERENCE_WIDTH = 11.5
+REFERENCE_WIDTH = 1.5
 
 
 class Response:
@@ -66,12 +66,17 @@ def getObjectMeasurement(image):
     # sort the contours from top-to-bottom and initialize the
     # 'pixels per centimetre' calibration variable
     (cnts, _) = contours.sort_contours(cnts, "top-to-bottom")
-    cnts = sorted(cnts[1:], key=lambda c: cv2.contourArea(c), reverse=True)
+    # cnts = sorted(cnts[1:], key=lambda c: cv2.contourArea(c), reverse=True)
 
     pixelsPerCenti = None
 
     # Find the top most contour to find reference width
+    i = 0
     c = cnts[0]
+    while cv2.contourArea(c) < 100:
+        c = cnts[i]
+        i += 1
+
     # compute the rotated bounding box of the contour
     orig = image.copy()
     box = cv2.minAreaRect(c)
@@ -115,6 +120,8 @@ def getObjectMeasurement(image):
     # compute it as the ratio of pixels to centimetres
     pixelsPerCenti = dB / REFERENCE_WIDTH
 
+    print(pixelsPerCenti)
+
     # compute the size of the object
     dimA = dA / pixelsPerCenti
     dimB = dB / pixelsPerCenti
@@ -141,7 +148,7 @@ def getObjectMeasurement(image):
 
     cv2.imwrite(f"imgStore/ref{dB}.jpg", orig)
 
-    c = cnts[1]
+    c = cnts[0]
     # compute the rotated bounding box of the contour
     orig = image.copy()
     box = cv2.minAreaRect(c)
