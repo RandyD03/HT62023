@@ -1,5 +1,5 @@
 import { Button, Grid, GridItem } from "@chakra-ui/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import BinCanvas from "./BinCanvas"
 import BoxCard from "./boxCard"
@@ -32,7 +32,48 @@ const boxes3d = [
     },
 ]
 
+// results data structure format
+// [
+//     {
+//       boxId: int,
+//       items: [
+//         {
+//           itemId: int,
+//           posX: float,
+//           posY: float,
+//           posZ: float
+//         },
+//         ...
+//       ]
+//   },
+//   ...
+// ]
 function ResultsTab({ props }) {
+    const [sanitizedResults, setSanitizedResults] = useState([])
+    useEffect(() => {
+        console.log("results use effect")
+        // global store of all items and boxes, passed from App.js
+        console.log(props)
+        let items = props.items
+        let boxes = props.boxes
+        let results = props.results
+        let rows = []
+        // transform the above data structure into the following format for displaying
+        // {
+        //     box: box object
+        //     items: [item objects]
+        // }
+        results.forEach((result) => {
+            const boxId = parseInt(result["boxId"])
+            let row = { box: boxes[boxId], items: [] }
+            result.items.forEach((item) => {
+                const itemId = parseInt(item["itemId"])
+                row["items"].push(items[itemId])
+            })
+            rows.push(row)
+        })
+        setSanitizedResults(rows)
+    }, [props.results])
     return (
         <Grid templateColumns="2fr 1fr" height="100%" gap={2}>
             <GridItem overflowX="scroll">
@@ -61,101 +102,25 @@ function ResultsTab({ props }) {
                     </Grid>
                 )} */}
                 <Grid gap={4}>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-
-                    {/* {props.boxes.map((box) => (
-                        <BoxCard
-                            props={{
-                                box: box,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    ))} */}
+                    {sanitizedResults.map((result) => (
+                        <GridItem>
+                            <ResultCard
+                                props={{
+                                    box: result.box,
+                                    items: result.items,
+                                    handleBoxDelete: props.handleBoxDelete,
+                                    handleItemDelete: props.handleItemDelete,
+                                }}
+                            />
+                        </GridItem>
+                    ))}
                 </Grid>
             </GridItem>
             <div>
-                <Button width="100%">Compute Results</Button>
-                <BinCanvas boxes={boxes3d} />
+                <Button width="100%" onClick={props.handleResultCompute}>
+                    Compute Results
+                </Button>
+                {/* <BinCanvas boxes={boxes3d} /> */}
             </div>
         </Grid>
     )
