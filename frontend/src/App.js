@@ -87,30 +87,55 @@ function App() {
             let curItems = resData[i].items
             for (let j = 0; j < curItems.length; j++) {
                 const itemId = parseInt(curItems[j].itemId)
-                let item = items.filter((item) => item.id === itemId)[0] // w, l, h here => x z y
+                let item = items.filter((item) => item.id === itemId)[0] // w, h, l here => x y z
                 const h = item.height
                 const w = item.width
                 const l = item.length
-                let size = [w, l, h] // w l h
+                let size = [l, h, w]
                 switch (parseInt(curItems[j].rt)) {
                     case 1:
-                        size = [h, l, w]
+                        ;[size[0], size[1], size[2]] = [
+                            size[2],
+                            size[1],
+                            size[0],
+                        ]
+                        // size = [l, h, w]
                         break
                     case 2:
-                        size = [l, w, h]
+                        ;[size[0], size[1], size[2]] = [
+                            size[1],
+                            size[0],
+                            size[2],
+                        ]
+                        // size = [h, w, l]
                         break
                     case 3:
                         // w h l => x z y
                         // h w l
-                        size = [h, w, l]
+                        ;[size[0], size[1], size[2]] = [
+                            size[2],
+                            size[0],
+                            size[1],
+                        ]
+                        // size = [l, w, h]
                         break
                     case 4:
-                        size = [w, h, l]
+                        ;[size[0], size[1], size[2]] = [
+                            size[0],
+                            size[2],
+                            size[1],
+                        ]
+                        // size = [w, l, h]
                         break
                     case 5:
                         // w h l => x z y
                         // l h w
-                        size = [l, h, w]
+                        ;[size[0], size[1], size[2]] = [
+                            size[1],
+                            size[2],
+                            size[0],
+                        ]
+                        // size = [h, l, w]
                         break
                     default:
                         break

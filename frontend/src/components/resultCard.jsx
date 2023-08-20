@@ -54,7 +54,10 @@ function ResultCard({ props }) {
                                 <Badge>Total Volume</Badge>
                             </StatLabel>
                             <StatNumber>
-                                {totBoxVolume}cm<sup>3</sup>
+                                {totBoxVolume
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
                         <Stat>
@@ -62,7 +65,10 @@ function ResultCard({ props }) {
                                 <Badge colorScheme="green">Volume Used</Badge>
                             </StatLabel>
                             <StatNumber>
-                                {totItemVolume}cm<sup>3</sup>
+                                {totItemVolume
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
                         <Stat>
@@ -70,7 +76,10 @@ function ResultCard({ props }) {
                                 <Badge colorScheme="red">Volume Empty</Badge>
                             </StatLabel>
                             <StatNumber>
-                                {totBoxVolume - totItemVolume}cm<sup>3</sup>
+                                {(totBoxVolume - totItemVolume)
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
                         <Button
