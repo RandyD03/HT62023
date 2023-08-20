@@ -41,7 +41,6 @@ function ItemTab({ props }) {
             navigator.mediaDevices
                 .enumerateDevices()
                 .then((devices) => {
-                    console.log(devices)
                     const filteredVideoIds = devices
                         .filter(
                             (device) =>

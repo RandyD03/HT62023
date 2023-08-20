@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react"
 import BoxTab from "./components/boxTab"
 import ItemTab from "./components/itemTab"
 import ResultTab from "./components/resultsTab"
+import axios from "axios"
 
 function App() {
     const [boxes, setBoxes] = useState([])
     const [items, setItems] = useState([])
-    const [result, setResult] = useState([])
+    const [results, setResults] = useState([])
 
     const handleBoxSubmit = (event, width, length, height, name, id) => {
         event.preventDefault()
@@ -29,10 +30,28 @@ function App() {
     }
 
     const handleResultCompute = async () => {
-        const result = await axios.post(
-            "http://127.0.0.1:5000/computeResult",
-            { boxes, items }
-        )
+        // const result = await axios.post("http://127.0.0.1:5000/computeResult", {
+        //     boxes,
+        //     items,
+        // })
+        // dummy code for testing, match each box with each item
+
+        let localResults = []
+        for (let i = 0; i < boxes.length; i++) {
+            // still items to add
+            if (i < items.length) {
+                localResults.push({
+                    boxId: boxes[i].id,
+                    items: [
+                        {
+                            itemId: items[i].id,
+                        },
+                    ],
+                })
+            }
+        }
+        console.log(localResults)
+        setResults(localResults)
     }
 
     const handleItemSubmit = (event, width, length, height, name, id) => {
@@ -85,6 +104,8 @@ function App() {
                         <ResultTab
                             props={{
                                 boxes: boxes,
+                                items: items,
+                                results: results,
                                 handleResultCompute: handleResultCompute,
                                 handleBoxDelete: handleBoxDelete,
                             }}
