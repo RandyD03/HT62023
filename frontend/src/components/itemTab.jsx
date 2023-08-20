@@ -22,7 +22,7 @@ function ItemTab() {
                 .then((devices) => {
                     console.log(devices)
                     const filteredVideoIds = devices
-                        .filter((device) => device.kind === "videoinput")
+                        .filter((device) => device.kind === "videoinput" && (device.label.includes("Webcam")))
                         .map((device) => device.deviceId)
                     getVideo(filteredVideoIds[0], videoRef1)
                     getVideo(filteredVideoIds[1], videoRef2)
@@ -83,8 +83,6 @@ function ItemTab() {
             "http://127.0.0.1:5000/processImages",
             [[photo1, photo2]]
         )
-        setAnnotatedImages(annotatedImages.data[1].frontImg)
-        console.log(annotatedImages.data[1].frontImg)
     }
 
     return (
