@@ -26,7 +26,10 @@ function ResultCard({ props }) {
         )
         let totVol = 0
         props.items.forEach((item) => {
-            totVol += item.length * item.width * item.height
+            totVol +=
+                parseFloat(item.length) *
+                parseFloat(item.width) *
+                parseFloat(item.height)
         })
         setTotItemVolume(Math.round(totVol))
     })
@@ -44,7 +47,7 @@ function ResultCard({ props }) {
                                 <Badge>Total Volume</Badge>
                             </StatLabel>
                             <StatNumber>
-                                {totBoxVolume}m<sup>3</sup>
+                                {totBoxVolume}cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
                         <Stat>
@@ -52,7 +55,7 @@ function ResultCard({ props }) {
                                 <Badge colorScheme="green">Volume Used</Badge>
                             </StatLabel>
                             <StatNumber>
-                                {totItemVolume}m<sup>3</sup>
+                                {totItemVolume}cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
                         <Stat>
@@ -60,7 +63,7 @@ function ResultCard({ props }) {
                                 <Badge colorScheme="red">Volume Empty</Badge>
                             </StatLabel>
                             <StatNumber>
-                                {totBoxVolume - totItemVolume}m<sup>3</sup>
+                                {totBoxVolume - totItemVolume}cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
                         <Button leftIcon={<SiWebpack />}>View in 3d</Button>
