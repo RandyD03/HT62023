@@ -13,7 +13,7 @@ import json
 import uuid
 
 # width of the top-most object used for reference measurements in centimetres
-REFERENCE_WIDTH = 10
+REFERENCE_WIDTH = 11.5
 
 
 class Response:
@@ -55,7 +55,7 @@ def getObjectMeasurement(image):
 
     # perform edge detection, then perform a dilation + erosion to
     # close gaps in between object edges
-    edged = cv2.Canny(gray, 100, 100)
+    edged = cv2.Canny(gray, 50, 100)
     edged = cv2.dilate(edged, None, iterations=1)
     edged = cv2.erode(edged, None, iterations=1)
 
@@ -70,6 +70,7 @@ def getObjectMeasurement(image):
 
     pixelsPerCenti = None
 
+    # Find the top most contour to find reference width
     c = cnts[0]
     # compute the rotated bounding box of the contour
     orig = image.copy()
@@ -111,10 +112,75 @@ def getObjectMeasurement(image):
     dA = dist.euclidean((tltrX, tltrY), (blbrX, blbrY))
     dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
 
-    # if the pixels per metric has not been initialized, then
     # compute it as the ratio of pixels to centimetres
-    if pixelsPerCenti is None:
-        pixelsPerCenti = dB / REFERENCE_WIDTH
+    pixelsPerCenti = dB / REFERENCE_WIDTH
+
+    # compute the size of the object
+    dimA = dA / pixelsPerCenti
+    dimB = dB / pixelsPerCenti
+
+    # draw the object sizes on the image
+    cv2.putText(
+        orig,
+        "{:.1f}cm".format(dimA),
+        (int(tltrX - 15), int(tltrY - 10)),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.65,
+        (255, 255, 255),
+        2,
+    )
+    cv2.putText(
+        orig,
+        "{:.1f}cm".format(dimB),
+        (int(trbrX + 10), int(trbrY)),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.65,
+        (255, 255, 255),
+        2,
+    )
+
+    cv2.imwrite(f"imgStore/ref{dB}.jpg", orig)
+
+    c = cnts[1]
+    # compute the rotated bounding box of the contour
+    orig = image.copy()
+    box = cv2.minAreaRect(c)
+    box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
+    box = np.array(box, dtype="int")
+
+    # order the points in the contour such that they appear
+    # in top-left, top-right, bottom-right, and bottom-left
+    # order, then draw the outline of the rotated bounding
+    # box
+    box = perspective.order_points(box)
+    cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
+
+    # loop over the original points and draw them
+    for (x, y) in box:
+        cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
+
+    # unpack the ordered bounding box, then compute the midpoint
+    # between the top-left and top-right coordinates, followed by
+    # the midpoint between bottom-left and bottom-right coordinates
+    (tl, tr, br, bl) = box
+    (tltrX, tltrY) = midPoint(tl, tr)
+    (blbrX, blbrY) = midPoint(bl, br)
+    # compute the midpoint between the top-left and top-right points,
+    # followed by the midpoint between the top-righ and bottom-right
+    (tlblX, tlblY) = midPoint(tl, bl)
+    (trbrX, trbrY) = midPoint(tr, br)
+    # draw the midpoints on the image
+    cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
+    cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
+    cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
+    cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
+    # draw lines between the midpoints
+    cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)), (255, 0, 255), 2)
+    cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)), (255, 0, 255), 2)
+
+    # compute the Euclidean distance between the midpoints
+    dA = dist.euclidean((tltrX, tltrY), (blbrX, blbrY))
+    dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
 
     # compute the size of the object
     dimA = dA / pixelsPerCenti
@@ -160,8 +226,8 @@ def processAllImages(imagePairs):
         frontDimensions = getObjectMeasurement(images[0])
         sideDimensions = getObjectMeasurement(images[1])
 
-        front_filename = f"front_{uuid.uuid4()}.jpg"
-        side_filename = f"side_{uuid.uuid4()}.jpg"
+        front_filename = f"front.jpg"
+        side_filename = f"side.jpg"
 
         cv2.imwrite(f"imgStore/{front_filename}", frontDimensions[1])
         cv2.imwrite(f"imgStore/{side_filename}", sideDimensions[1])
