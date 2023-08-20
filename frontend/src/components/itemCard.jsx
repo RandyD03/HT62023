@@ -33,13 +33,13 @@ function ItemCard({ props }) {
                     <Heading size="md">{props.item.name}</Heading>
                     <Flex flexDir="column" width="100%">
                         <Box>
-                            <Badge>Length</Badge> {props.item.length} m
+                            <Badge>Length</Badge> {props.item.length} cm
                         </Box>
                         <Box>
-                            <Badge>Width</Badge> {props.item.height} m
+                            <Badge>Width</Badge> {props.item.height} cm
                         </Box>
                         <Box>
-                            <Badge>Height</Badge> {props.item.width} m
+                            <Badge>Height</Badge> {props.item.width} cm
                         </Box>
                     </Flex>
                 </Stack>
