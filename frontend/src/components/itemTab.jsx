@@ -112,6 +112,9 @@ function ItemTab({ props }) {
             annotatedImages.data.dimensions[0],
             annotatedImages.data.dimensions[1],
             annotatedImages.data.dimensions[2],
+            // 1,
+            // 1,
+            // 1,
             name,
             id,
             annotatedImages.data.frontImg

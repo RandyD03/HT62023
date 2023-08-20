@@ -66,7 +66,12 @@ function ResultCard({ props }) {
                                 {totBoxVolume - totItemVolume}cm<sup>3</sup>
                             </StatNumber>
                         </Stat>
-                        <Button leftIcon={<SiWebpack />}>View in 3d</Button>
+                        <Button
+                            leftIcon={<SiWebpack />}
+                            onClick={(e) => props.set3DView(e, props.box.id)}
+                        >
+                            View in 3d
+                        </Button>
                     </VStack>
                     <BoxCard
                         props={{

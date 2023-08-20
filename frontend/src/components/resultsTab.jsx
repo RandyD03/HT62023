@@ -90,6 +90,42 @@ function ResultsTab({ props }) {
         setSanitizedResults(rows)
         console.log(rows)
     }, [props.results])
+
+    const set3DView = (e, id) => {
+        // global store of all items and boxes, passed from App.js
+        let items = props.items
+        let boxes = props.boxes
+        let results = props.results
+        let rows = []
+
+        if (props.results.length > 0) {
+            setCurrentBin(
+                props.boxes.filter(
+                    (box) => box.id === props.results[id].boxId
+                )[0]
+            )
+            setCurrentItems(props.results[id].items)
+        }
+
+        // transform the above data structure into the following format for displaying
+        // {
+        //     box: box object
+        //     items: [item objects]
+        // }
+        results.forEach((result) => {
+            const boxId = parseInt(result["boxId"])
+            let row = {
+                box: boxes.filter((box) => box.id === boxId)[0],
+                items: [],
+            }
+            result.items.forEach((item) => {
+                const itemId = parseInt(item["itemId"])
+                row["items"].push(items.filter((item) => item.id === itemId)[0])
+            })
+            rows.push(row)
+        })
+        setSanitizedResults(rows)
+    }
     return (
         <Grid templateColumns="2fr 1fr" height="100%" gap={2}>
             <GridItem overflowX="scroll">
@@ -100,6 +136,7 @@ function ResultsTab({ props }) {
                                 props={{
                                     box: result.box,
                                     items: result.items,
+                                    set3DView: set3DView,
                                 }}
                             />
                         </GridItem>
