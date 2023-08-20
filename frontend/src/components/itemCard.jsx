@@ -16,7 +16,7 @@ import { DeleteIcon } from "@chakra-ui/icons"
 
 function ItemCard({ props }) {
     return (
-        <Card boxShadow="lg">
+        <Card boxShadow="lg" height="100%">
             <Center h="100%" p="8">
                 <Image
                     src={props.image}
@@ -36,14 +36,18 @@ function ItemCard({ props }) {
                 </Stack>
             </CardBody>
             <CardFooter>
-                <Button
-                    variant="solid"
-                    colorScheme="red"
-                    onClick={() => props.handleItemDelete(props.item.id)}
-                    leftIcon={<DeleteIcon />}
-                >
-                    Delete
-                </Button>
+                {props.handleItemDelete === undefined ? (
+                    ""
+                ) : (
+                    <Button
+                        variant="solid"
+                        colorScheme="red"
+                        onClick={() => props.handleItemDelete(props.item.id)}
+                        leftIcon={<DeleteIcon />}
+                    >
+                        Delete
+                    </Button>
+                )}
             </CardFooter>
         </Card>
     )

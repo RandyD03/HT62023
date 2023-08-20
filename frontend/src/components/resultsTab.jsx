@@ -1,5 +1,5 @@
 import { Button, Grid, GridItem } from "@chakra-ui/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import BinCanvas from "./BinCanvas"
 import BoxCard from "./boxCard"
@@ -32,125 +32,64 @@ const boxes3d = [
     },
 ]
 
+// results data structure format
+// [
+//     {
+//       boxId: int,
+//       items: [
+//         {
+//           itemId: int,
+//           posX: float,
+//           posY: float,
+//           posZ: float
+//         },
+//         ...
+//       ]
+//   },
+//   ...
+// ]
 function ResultsTab({ props }) {
+    const [sanitizedResults, setSanitizedResults] = useState([])
+    useEffect(() => {
+        // global store of all items and boxes, passed from App.js
+        let items = props.items
+        let boxes = props.boxes
+        let results = props.results
+        let rows = []
+        // transform the above data structure into the following format for displaying
+        // {
+        //     box: box object
+        //     items: [item objects]
+        // }
+        results.forEach((result) => {
+            const boxId = parseInt(result["boxId"])
+            let row = {
+                box: boxes.filter((box) => box.id === boxId)[0],
+                items: [],
+            }
+            result.items.forEach((item) => {
+                const itemId = parseInt(item["itemId"])
+                row["items"].push(items.filter((item) => item.id === itemId)[0])
+            })
+            rows.push(row)
+        })
+        setSanitizedResults(rows)
+        console.log(rows)
+    }, [props.results])
     return (
         <Grid templateColumns="2fr 1fr" height="100%" gap={2}>
             <GridItem overflowX="scroll">
-                {/* {props.boxes.length == 0 ? (
-                    <Center height="100%">
-                        <Heading color="blackAlpha.300">
-                            No results computed yet
-                        </Heading>
-                    </Center>
-                ) : (
-                    <Grid
-                        gap={4}
-                        p="10"
-                        templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-                        overflowY="scroll"
-                        maxHeight="100vh"
-                    >
-                        {props.boxes.map((box) => (
-                            <BoxCard
+                <Grid gap={4}>
+                    {sanitizedResults.map((result) => (
+                        <GridItem>
+                            <ResultCard
                                 props={{
-                                    box: box,
-                                    handleBoxDelete: props.handleBoxDelete,
+                                    box: result.box,
+                                    items: result.items,
                                 }}
                             />
-                        ))}
-                    </Grid>
-                )} */}
-                <Grid gap={4}>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-                    <GridItem>
-                        <ResultCard
-                            props={{
-                                boxes: props.boxes,
-                                items: props.items,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    </GridItem>
-
-                    {/* {props.boxes.map((box) => (
-                        <BoxCard
-                            props={{
-                                box: box,
-                                handleBoxDelete: props.handleBoxDelete,
-                            }}
-                        />
-                    ))} */}
+                        </GridItem>
+                    ))}
                 </Grid>
             </GridItem>
             <div>

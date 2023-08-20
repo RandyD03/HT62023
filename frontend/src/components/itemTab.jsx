@@ -41,7 +41,6 @@ function ItemTab({ props }) {
             navigator.mediaDevices
                 .enumerateDevices()
                 .then((devices) => {
-                    console.log(devices)
                     const filteredVideoIds = devices
                         .filter(
                             (device) =>
@@ -104,10 +103,10 @@ function ItemTab({ props }) {
     }
 
     async function handleImageUpload(e) {
-        // const annotatedImages = await axios.post(
-        //     "http://127.0.0.1:5000/processImages",
-        //     [[photo1, photo2]]
-        // )
+        const annotatedImages = await axios.post(
+            "http://127.0.0.1:5000/processImages",
+            [[photo1, photo2]]
+        )
         props.handleItemSubmit(e, width, length, height, name, id)
         setId((prevId) => prevId + 1)
         setName("")
