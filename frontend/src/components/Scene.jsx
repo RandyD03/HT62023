@@ -4,12 +4,16 @@ import {
     Select,
     Selection,
 } from "@react-three/postprocessing"
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 
 const Scene = (props) => {
     const group = useRef()
     const [hovered, hover] = useState(false)
+    const [rotatedItems, setRotatedItems] = useState([])
 
+    useEffect(() => {
+        console.log(props)
+    })
     return (
         <group
             onPointerOver={(e) => hover(true)}
@@ -17,7 +21,7 @@ const Scene = (props) => {
             ref={group}
         >
             <Select name={`box${props.id}`} enabled={hovered}>
-                <mesh position={props.position}>
+                <mesh position={[props.posX, props.posY, props.posZ]}>
                     <boxGeometry args={props.size} />
                     {props.transparent ? (
                         <meshPhongMaterial

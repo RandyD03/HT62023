@@ -16,6 +16,7 @@ import os
 # width of the top-most object used for reference measurements in centimetres
 REFERENCE_WIDTH = 1.5
 
+COLOURS = ["red", "blue", "yellow", "green", "orange", "brown", "purple"]
 
 class Response:
     def __init__(self, dimensions, uniqueID, frontResult, sideResult):

@@ -1,6 +1,9 @@
 from box import Box
 from item import Item
 import py3dbp
+import random
+
+COLOURS = ["red", "blue", "yellow", "green", "orange", "brown", "purple"]
 
 INFINITY = 100000000
 
@@ -83,33 +86,43 @@ def packItems(items, boxes):
     boxDict = {}
 
     for box in boxes:
-        newBin = py3dbp.Bin(box['name'], (box['width']), box['height'], box['length'], INFINITY)
+        newBin = py3dbp.Bin(
+            box["name"], (box["width"]), box["height"], box["length"], INFINITY
+        )
         packer.add_bin(newBin)
-        boxDict[newBin] = box['id']
+        boxDict[newBin] = box["id"]
 
     for item in items:
-        newItem = py3dbp.Item(item['name'], item['width'], item['height'], item['length'], 0)
+        newItem = py3dbp.Item(
+            item["name"], item["width"], item["height"], item["length"], 0
+        )
         packer.add_item(newItem)
-        itemDict[newItem] = item['id']
+        itemDict[newItem] = item["id"]
 
     packer.pack(distribute_items=True)
 
     result = []
 
     for idx, b in enumerate(packer.bins):
-        result.append({
-            "boxId": boxDict[b],
-            "items": [],
-        })
+        result.append(
+            {
+                "boxId": boxDict[b],
+                "items": [],
+            }
+        )
 
         for item in b.items:
-            result[idx]['items'].append({
-                "itemId": itemDict[item],
-                "posX": float(item.position[0]), # width
-                "posY": float(item.position[1]), # height
-                "posZ": float(item.position[2]), # length
-            })
-
+            result[idx]["items"].append(
+                {
+                    "itemId": itemDict[item],
+                    "posX": str(item.position[0]),  # width
+                    "posY": str(item.position[1]),  # height
+                    "posZ": str(item.position[2]),  # length
+                    "rt": str(item.rotation_type),  # rotation
+                    "color": random.choice(COLOURS),
+                }
+            )
+    print(result)
     return result
 
 
@@ -130,39 +143,40 @@ def main():
     #         item.print_info()
     packer = py3dbp.Packer()
 
-    packer.add_bin(py3dbp.Bin("small-envelope", 11.5, 6.125, 0.25, 10))
-    packer.add_bin(py3dbp.Bin("large-envelope", 15.0, 12.0, 0.75, 15))
-    packer.add_bin(py3dbp.Bin("small-box", 8.625, 5.375, 1.625, 70.0))
-    packer.add_bin(py3dbp.Bin("medium-box", 11.0, 8.5, 5.5, 70.0))
-    packer.add_bin(py3dbp.Bin("medium-2-box", 13.625, 11.875, 3.375, 70.0))
-    packer.add_bin(py3dbp.Bin("large-box", 12.0, 12.0, 5.5, 70.0))
-    packer.add_bin(py3dbp.Bin("large-2-box", 23.6875, 11.75, 3.0, 70.0))
+    # packer.add_bin(py3dbp.Bin("small-envelope", 11.5, 6.125, 0.25, 10))
+    # packer.add_bin(py3dbp.Bin("large-envelope", 15.0, 12.0, 0.75, 15))
+    # packer.add_bin(py3dbp.Bin("small-box", 8.625, 5.375, 1.625, 70.0))
+    # packer.add_bin(py3dbp.Bin("medium-box", 11.0, 8.5, 5.5, 70.0))
+    # packer.add_bin(py3dbp.Bin("medium-2-box", 13.625, 11.875, 3.375, 70.0))
+    # packer.add_bin(py3dbp.Bin("large-box", 12.0, 12.0, 5.5, 70.0))
+    # packer.add_bin(py3dbp.Bin("large-2-box", 23.6875, 11.75, 3.0, 70.0))
 
-    packer.add_item(py3dbp.Item("50g [powder 1]", 3.9370, 1.9685, 1.9685, 1))
-    packer.add_item(py3dbp.Item("50g [powder 2]", 3.9370, 1.9685, 1.9685, 2))
-    packer.add_item(py3dbp.Item("50g [powder 3]", 3.9370, 1.9685, 1.9685, 3))
-    packer.add_item(py3dbp.Item("250g [powder 4]", 7.8740, 3.9370, 1.9685, 4))
-    packer.add_item(py3dbp.Item("250g [powder 5]", 7.8740, 3.9370, 1.9685, 5))
-    packer.add_item(py3dbp.Item("250g [powder 6]", 7.8740, 3.9370, 1.9685, 6))
-    packer.add_item(py3dbp.Item("250g [powder 7]", 7.8740, 3.9370, 1.9685, 7))
-    packer.add_item(py3dbp.Item("250g [powder 8]", 7.8740, 3.9370, 1.9685, 8))
-    packer.add_item(py3dbp.Item("250g [powder 9]", 7.8740, 3.9370, 1.9685, 9))
+    # packer.add_item(py3dbp.Item("50g [powder 1]", 3.9370, 1.9685, 1.9685, 1))
+    # packer.add_item(py3dbp.Item("50g [powder 2]", 3.9370, 1.9685, 1.9685, 2))
+    # packer.add_item(py3dbp.Item("50g [powder 3]", 3.9370, 1.9685, 1.9685, 3))
+    # packer.add_item(py3dbp.Item("250g [powder 4]", 7.8740, 3.9370, 1.9685, 4))
+    # packer.add_item(py3dbp.Item("250g [powder 5]", 7.8740, 3.9370, 1.9685, 5))
+    # packer.add_item(py3dbp.Item("250g [powder 6]", 7.8740, 3.9370, 1.9685, 6))
+    # packer.add_item(py3dbp.Item("250g [powder 7]", 7.8740, 3.9370, 1.9685, 7))
+    # packer.add_item(py3dbp.Item("250g [powder 8]", 7.8740, 3.9370, 1.9685, 8))
+    # packer.add_item(py3dbp.Item("250g [powder 9]", 7.8740, 3.9370, 1.9685, 9))
 
-    packer.pack(distribute_items=True)
+    # packer.pack(distribute_items=True)
 
-    for b in packer.bins:
-        print(":::::::::::", b.string())
+    # for b in packer.bins:
+    #     print(":::::::::::", b.string())
 
-        print("FITTED ITEMS:")
-        for item in b.items:
-            print("====> ", item.string())
-            print(type(item.position))
+    #     print("FITTED ITEMS:")
+    #     for item in b.items:
+    #         print("====> ", item.string())
+    #         print(type(item.position))
 
-        print("UNFITTED ITEMS:")
-        for item in b.unfitted_items:
-            print("====> ", item.string())
+    #     print("UNFITTED ITEMS:")
+    #     for item in b.unfitted_items:
+    #         print("====> ", item.string())
 
-        print("***************************************************")
-        print("***************************************************")
+    #     print("***************************************************")
+    #     print("***************************************************")
 
-#main()
+
+main()
